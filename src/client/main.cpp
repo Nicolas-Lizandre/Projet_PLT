@@ -15,18 +15,13 @@ using namespace state;
 
 int main()
 {
-    Plate plate= L();
-    plate.turnPlate();
-    plate.showPlate();
-    plate.turnPlate();
-    plate.showPlate();
-    Plate plate2= T();
-    plate2.showPlate();
-    Plate plate3= I();
-    plate3.showPlate();
-    plate3.turnPlate();
-    plate3.showPlate();
-
+    Board board;
+    board.createPlayground();
+    board.showBoard();
+    printf("\n");
+    board.insertPlate(0,5);
+    board.insertPlate(0,5);
+    board.showBoard();
     cout << "It does not work !" << endl;
 
     return 0;
