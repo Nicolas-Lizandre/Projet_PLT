@@ -37,7 +37,7 @@ void state::Board::insertPlate(int i, int j) {
         case 0:
             masterplate = std::move(playground[i][6]);
             for (int l = 6;  l>0 ; l--) {
-                playground[i][l] = std::move(playground[i][l]);
+                playground[i][l] = std::move(playground[i][l-1]);
             }
             playground[i][0]=std::move(tempPlate);
             break;
@@ -53,8 +53,8 @@ void state::Board::insertPlate(int i, int j) {
 }
 
 
-void state::Board::turnMasterPlate(Plate masterplate){
-
+void state::Board::turnMasterPlate(){
+    masterplate->turnPlate();
 }
 
 void state::Board::showBoard() {

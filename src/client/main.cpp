@@ -20,9 +20,22 @@ int main()
     board.showBoard();
     printf("\n");
     board.insertPlate(0,5);
+    board.turnMasterPlate();
     board.insertPlate(0,5);
     board.showBoard();
-    cout << "It does not work !" << endl;
+    printf("\n");
+    board.turnMasterPlate();
+    board.insertPlate(6,3);
+    board.showBoard();
+    printf("\n");
+    board.turnMasterPlate();
+    board.insertPlate(2,0);
+    board.showBoard();
+    printf("\n");
+    board.turnMasterPlate();
+    board.insertPlate(3,6);
+    board.showBoard();
+    cout << "It just works ! " << endl;
 
     return 0;
 }
