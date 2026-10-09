@@ -46,6 +46,10 @@ void state::Board::insertPlate(int i, int j, Plate plate) {
 
 
 void state::Board::turnMasterPlate(Plate masterplate){
+
+}
+
+void state::Board::showBoard() {
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
             board[i][j].showPlate();
