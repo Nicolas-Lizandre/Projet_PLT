@@ -896,11 +896,18 @@ void print_include_stdlib(struct stdlib_includes *si, char *name)
 
         /* SFML */
         INCLUDE_STD_HEADER(sfmlGraphics, "sf::RenderWindow", "SFML/Graphics.hpp")
+        INCLUDE_STD_HEADER(sfmlGraphics, "sf::Font", "SFML/Graphics.hpp")
+        INCLUDE_STD_HEADER(sfmlGraphics, "sf::Text", "SFML/Graphics.hpp")
+
+
         INCLUDE_STD_HEADER(sfmlGraphics, "sf::VertexArray", "SFML/Graphics.hpp")
         INCLUDE_STD_HEADER(sfmlGraphics, "sf::Texture", "SFML/Graphics.hpp")
+        INCLUDE_STD_HEADER(sfmlGraphics, "sf::Sprite", "SFML/Graphics.hpp")
+
 
         /* JSONCPP */
         INCLUDE_STD_HEADER(jsoncpp, "Json::", "json/json.h")
+
     }
 }
 

@@ -91,6 +91,7 @@ void render::TitleScreen::handleEvents(sf::Event &event) {
             {*/
             if (mousePos.x >240 && mousePos.y > 400 && mousePos.x < 555 && mousePos.y < 466)
                 {
+
                 std::cout << "Zone clique Titlescreen !" << std::endl;
                 //screen->set_current_screen_state(std::make_unique<GameModeScreen>(screen));
             }
