@@ -31,8 +31,8 @@ target_compile_options(${lib_client_target} PUBLIC
 )
 # Compile "client" executable
 add_executable(${client_target} main.cpp
-        client/Example.cpp
-        ../../test/shared/test_board.cpp)
+        client/Game.cpp
+        client/Game.h)
 target_link_libraries(${client_target} PUBLIC 
   ${lib_client_target}
 )

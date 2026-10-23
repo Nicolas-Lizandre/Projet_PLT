@@ -9,25 +9,14 @@ void testSFML() {
 // end of test SFML
 
 #include <state.h>
-
+#include <client.h>
 using namespace std;
 using namespace state;
 
 int main()
 {
-    Plate plate= L();
-    plate.turnPlate();
-    plate.showPlate();
-    plate.turnPlate();
-    plate.showPlate();
-    Plate plate2= T();
-    plate2.showPlate();
-    Plate plate3= I();
-    plate3.showPlate();
-    plate3.turnPlate();
-    plate3.showPlate();
-
-    cout << "It does not work !" << endl;
+    client::Game game= client::Game();
+    game.run();
 
     return 0;
 }
