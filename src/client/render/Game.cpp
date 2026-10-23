@@ -12,7 +12,7 @@
 
 
 render::Game::Game () {
-    try {ArialFont::font = sf::Font("assets/arial.ttf");} //Revoir décla arial.ttf
+    try {ArialFont::font = sf::Font("../assets/arial.ttf");} //Revoir décla arial.ttf
     catch (...) {std::cout << "Error loading arial.ttf" << std::endl;
         throw std::runtime_error("Error loading arial.ttf");}
 

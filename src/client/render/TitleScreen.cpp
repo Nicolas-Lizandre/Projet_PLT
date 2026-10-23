@@ -13,7 +13,7 @@ render::TitleScreen::TitleScreen(sf::RenderWindow & window, state::Board & board
     completeSprite cd;
     //sf::Sprite sprite;
 
-    cd.respective_texture = std::make_unique<sf::Texture>("assets/Background_LABYRINTHE.png");
+    cd.respective_texture = std::make_unique<sf::Texture>("../assets/Background_LABYRINTHE.png");
     cd.sprite = std::make_unique<sf::Sprite>(sf::Sprite(*cd.respective_texture)); //0, 0, 800, 600
     cd.sprite->setPosition(sf::Vector2f(0, 0));
     cd.sprite->setScale(sf::Vector2f(1.f, 1.f));
@@ -32,14 +32,14 @@ render::TitleScreen::TitleScreen(sf::RenderWindow & window, state::Board & board
 
 
     // Logo Labyrinthe
-    cd.respective_texture = std::make_unique<sf::Texture>("assets/Logo_LABYRINTHE.png");
+    cd.respective_texture = std::make_unique<sf::Texture>("../assets/Logo_LABYRINTHE.png");
     cd.sprite = std::make_unique<sf::Sprite>(*cd.respective_texture); //0, 0, 1200, 600
     cd.sprite->setPosition(sf::Vector2f(-80, 0));
     cd.sprite->setScale(sf::Vector2f(0.8f, 0.8f));
     list_complete_sprites.push_back(std::move(cd));
 
     // Bouton Commencer
-    cd.respective_texture = std::make_unique<sf::Texture>("assets/Bouton_Commencer_Labyrinthe.png");
+    cd.respective_texture = std::make_unique<sf::Texture>("../assets/Bouton_Commencer_Labyrinthe.png");
     cd.sprite = std::make_unique<sf::Sprite>(*cd.respective_texture); //0, 0, 150, 66
     cd.sprite->setPosition(sf::Vector2f(240, 400));
     cd.sprite->setScale(sf::Vector2f(2.1f, 1.0f));
