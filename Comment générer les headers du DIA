@@ -1,0 +1,16 @@
+Méthodo #1 [cd ~/projets/Projet_PLT]
+cmake --build . --target generate-header-state --verbose
+-> Un seul champ à modif
+
+Méthodo #2 [cd ~/projets/Projet_PLT]
+ ./bin/dia2code --debug 8     -ns render     -d src/client     -t cpp     src/render.dia
+-> Nécessité de modifier les champs
+
+Méthodo #3
+faire un build dans le main du client
+-> struct non genéré/ fichiers non mis automatiquement dans un dossier
+
+
+Commment faire ftner dia :
+Débrancher mon PC pd ou avant un dia xxx.dia
+Ou RUSH ouverture dia en CLion [répare même la souris] / ou dois jouer avec les options graphiques

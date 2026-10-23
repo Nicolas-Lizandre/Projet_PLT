@@ -1,3 +1,12 @@
-//
-// Created by nicol on 22/10/2026.
-//
+#include "render/RulesAPI.h"
+
+#include <iostream>
+
+render::RulesAPI::RulesAPI () {
+
+}
+
+render::RulesAPI::~RulesAPI () {
+    std::cout <<"RulesAPI destroyed"<< std::endl;
+}
+void verify_command_validity (std::string command);
