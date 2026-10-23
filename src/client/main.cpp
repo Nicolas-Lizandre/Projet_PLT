@@ -11,7 +11,6 @@ void testSFML() {
 #include <state.h>
 #include <client.h>
 using namespace std;
-using namespace state;
 
 int main()
 {
