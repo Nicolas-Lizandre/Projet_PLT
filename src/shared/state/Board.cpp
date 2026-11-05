@@ -81,7 +81,7 @@ void state::Board::turnMasterPlate(){
     masterplate->turnPlate();
 }
 
-void state::Board::showBoard() {
+void state::Board::display() {
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
             playground[i][j]->showPlate();
@@ -148,4 +148,36 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
         }
     }
     return reachable;
+}
+
+//Struct to save the board state
+enum PlateType {
+    L_TYPE,
+    T_TYPE,
+    I_TYPE
+};
+
+typedef struct PlateState {
+    PlateType type;
+    int rotation;
+    std::string treasure;
+} PlateState;
+
+#include <ctime>
+
+std::string defaultFilename(const std::string& prefix = "SavedGame") {
+    std::time_t t = std::time(nullptr);
+    char time_in_char[32];
+    std::strftime(time_in_char, sizeof(time_in_char), "%Y-%m-%d_%H-%M-%S", std::localtime(&t));
+    return prefix + "_" + time_in_char + ".json";
+}
+
+void state::Board::load(std::string path) {
+    // Implementation for loading the board from a file
+
+
+}
+
+void state::Board::shuffle() {
+    // Implementation for shuffling the board
 }
