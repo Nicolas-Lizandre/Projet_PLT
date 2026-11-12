@@ -175,10 +175,23 @@ static Json::Value toJson(const Plate& plate) {
 }
 
 static std::unique_ptr<Plate> fromJson(const Json::Value& SavedPlate) {
-    auto plate = std::make_unique<Plate>(SavedPlate["north"].asBool(),  SavedPlate["south"].asBool(), SavedPlate["east"].asBool(), SavedPlate["west"].asBool());
-    //plate->setRotation(SavedPlate["rotation"].asInt());
-    //plate->setTreasure(SavedPlate["treasure"].asString());
+    std::unique_ptr<Plate> plate;
+    auto nb_access = SavedPlate["north"].asBool() + SavedPlate["south"].asBool() + SavedPlate["east"].asBool() + SavedPlate["west"].asBool();
+    if(nb_access == 3) {
+        plate = std::make_unique<T>();
+        
+    } else if (nb_access == 2 && ((SavedPlate["north"].asBool() && SavedPlate["south"].asBool()) || (SavedPlate["east"].asBool() && SavedPlate["west"].asBool()))) {
+        plate = std::make_unique<I>();
+    } else  if(nb_access == 2) {
+        plate = std::make_unique<L>();
+    }else{
+        std::cerr << "Invalid plate configuration in JSON." << std::endl;
+        return nullptr;
+    }
     
+    for (int k =0; k < 4 && (plate->getNorth() != SavedPlate["north"].asBool() || plate->getEast() != SavedPlate["east"].asBool() || plate->getSouth() != SavedPlate["south"].asBool() || plate->getWest() != SavedPlate["west"].asBool()); k++) {
+            plate->turnPlate();
+        }
     return plate;
 }
 
