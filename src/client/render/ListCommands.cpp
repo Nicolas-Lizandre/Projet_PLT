@@ -1,22 +1,31 @@
 #include "ListCommands.h"
-
+#include "Command.h"
 #include <iostream>
 
-render::ListCommands::ListCommands() {
-    rules = RulesAPI();
+using namespace render;
+
+ListCommands::ListCommands() {
+    //rules = RulesAPI();
 }
 
-render::ListCommands::~ListCommands() {
+ListCommands::~ListCommands() {
     std::cout <<"ListCommands destroyed"<< std::endl;
 
 }
 
-void render::ListCommands::add(std::string command) {
-    std::cout << command << " added" << std::endl;
+const std::vector<std::unique_ptr<Command>> & ListCommands::getListCommands()  {
+    return list_commands;
 }
 
-void render::ListCommands::exeAll () {
+void ListCommands::exeAll () {
+    for (auto & command : list_commands) {
+        command->exec();
+    }
+    list_commands.clear(); //On vide les commandes exécutées
+}
 
+void ListCommands::add (std::unique_ptr<Command> command) {
+    list_commands.push_back(std::move(command));
 }
 
 

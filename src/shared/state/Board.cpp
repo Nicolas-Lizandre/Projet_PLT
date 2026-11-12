@@ -96,6 +96,8 @@ void state::Board::createPlayground() {
             plate = std::make_unique<state::L>();
         }
     }
+    playground[0][5] = std::make_unique<state::I>();
+    playground[0][5]->turnPlate();
     masterplate = std::make_unique<state::T>();
 }
 
@@ -148,4 +150,13 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
         }
     }
     return reachable;
+}
+
+
+std::array<std::array<std::unique_ptr<state::Plate>, 7>, 7> &state::Board::getPlayground() {
+    return playground;
+}
+
+state::Plate state::Board::getMasterplate() {
+    return *masterplate;
 }

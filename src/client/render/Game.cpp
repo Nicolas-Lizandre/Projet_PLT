@@ -7,11 +7,13 @@
 #include <memory>
 
 #include "ArialFont.h"
+#include "GameModeScreen.h"
+#include "GameScreen.h"
 #include "render/completeSprite.h"
 #include "render/completeText.h"
 
 
-render::Game::Game () {
+render::Game::Game () : list_commands(ListCommands()){ //La liste d'init est bien car elle permet d'éviter les copies
     try {ArialFont::font = sf::Font("../assets/arial.ttf");} //Revoir décla arial.ttf
     catch (...) {std::cout << "Error loading arial.ttf" << std::endl;
         throw std::runtime_error("Error loading arial.ttf");}
@@ -21,9 +23,9 @@ render::Game::Game () {
     //Je vais devoir push et demander aux autres de tester
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
-    current_screen_state = std::make_unique<TitleScreen>(window,board);
+    current_screen_state = std::make_unique<TitleScreen>(window);
     board = state::Board();
-    list_commands = ListCommands();
+    board.createPlayground();
 }
 
 render::Game::~Game() {
@@ -43,6 +45,8 @@ void render::Game::run() {
             break;
 
         manageDraw();
+        seekDemandNewScreen();
+        execQueriedCommands();
     }
 }
 
@@ -50,6 +54,7 @@ void render::Game::manageGUI_Event (sf::Event &event) {
     current_screen_state->handleEvents(event);
 }
 void render::Game::manageDraw() {
+    current_screen_state->drawablesUpdate();  //Peut se mettre dans le run ? - Mettre une condition pour optimiser
     window.clear();
     const std::vector<completeSprite> & sprites = current_screen_state->getSprites();
     for(int i=0;i<sprites.size();i++) {
@@ -64,4 +69,22 @@ void render::Game::manageDraw() {
     window.display();
 }
 /// lecture du champ de current_State de New ScreenStateQuerried
-//void render::Game::setNewScreenState ();
+void render::Game::seekDemandNewScreen () {
+    if(current_screen_state->getDemandScreenChange() != NO_QUERY) {
+        if(current_screen_state->getDemandScreenChange() == TITLESCREEN) {
+            current_screen_state = std::make_unique<TitleScreen>(window);
+        }
+        else if(current_screen_state->getDemandScreenChange() == GAMEMODESCREEN) {
+            current_screen_state = std::make_unique<GameModeScreen>(window);
+        }
+        else if(current_screen_state->getDemandScreenChange() == GAMESCREEN) {
+            current_screen_state = std::make_unique<GameScreen>(window,board,list_commands);
+        }
+
+    }
+
+}
+
+void render::Game::execQueriedCommands() {
+    list_commands.exeAll();
+}
