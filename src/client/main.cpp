@@ -18,14 +18,16 @@ using namespace render;
 
 int main()
 {
-    render::Game game; //Morceau de code Lizandre
-    game.run();
+    //render::Game game; //Morceau de code Lizandre
+    //game.run();
 
 
     Board board;
     Player joueur;
-    board.createPlayground();
-
+    //board.createPlayground();
+    board.display();
+    board.save("test.json");
+    
     vector<array<int, 2>> atteignables = board.searchPath(1, 4);
     vector<array<int, 2>> atteignables2 = board.searchPath(2, 0);
     cout << "Cases atteignables depuis (1,4) : ";
@@ -39,8 +41,10 @@ int main()
     }
     cout << endl;
     cout << "It just works ! " << endl;
+    /*
     client::Game game1= client::Game();
     game1.run();
+    */
 
     return 0;
 }
