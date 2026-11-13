@@ -1,7 +1,8 @@
 #include <iostream>
 
 // The following lines are here to check that SFML is installed and working
-#include <render/Game.h>
+#include <thread>
+#include <client/GameWithRender.h>
 #include <SFML/Graphics.hpp>
 // LCOV_EXCL_START
 void testSFML() {
@@ -15,11 +16,13 @@ using namespace std;
 using namespace state;
 using namespace sf;
 using namespace render;
+using namespace client;
 
 int main()
 {
-    //render::Game game; //Morceau de code Lizandre
-    //game.run();
+    GameWithRender game; //Morceau de code Lizandre
+    game.run();
+
 
 
     Board board;
@@ -55,6 +58,7 @@ int main()
     */
 
     return 0;
+
 }
 
 // LCOV_EXCL_END

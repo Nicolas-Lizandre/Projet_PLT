@@ -103,6 +103,8 @@ void state::Board::createPlayground() {
             plate = std::make_unique<state::L>();
         }
     }
+    playground[0][5] = std::make_unique<state::I>();
+    playground[0][5]->turnPlate();
     masterplate = std::make_unique<state::T>();
 }
 
@@ -358,4 +360,13 @@ void state::Board::shuffle() {
             masterplate = std::make_unique<state::L>();
     }
 
+}
+
+
+std::array<std::array<std::unique_ptr<state::Plate>, 7>, 7> &state::Board::getPlayground() {
+    return playground;
+}
+
+state::Plate state::Board::getMasterplate() {
+    return *masterplate;
 }

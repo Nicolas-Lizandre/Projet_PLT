@@ -9,4 +9,5 @@ src/**/*.h
 *.autosave
 tmp
 .env
-Comment générer les headers du DIA.txt
+/Comment générer les headers du DIA
+/TASKS_TO_DO
