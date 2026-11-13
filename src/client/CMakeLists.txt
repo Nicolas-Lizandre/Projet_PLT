@@ -12,12 +12,18 @@ list(REMOVE_ITEM client_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
 # Build the "client" library, add required include and link against dependencies
 add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources}
-        render/Game.cpp
+        render/Render.cpp
         render/TitleScreen.cpp
         render/ArialFont.cpp
         render/ListCommands.cpp
         render/ScreenState.cpp
-        render/RulesAPI.cpp)
+        render/RulesAPI.cpp
+        render/GameModeScreen.cpp
+        render/GameScreen.cpp
+        render/InsertPlateCOMMAND.cpp
+        render/rotateMasterPlateCOMMAND.cpp
+        render/Command.cpp
+        client/GameWithRender.cpp)
 add_dependencies(${lib_client_target} generate-headers)
 target_include_directories(${lib_client_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
