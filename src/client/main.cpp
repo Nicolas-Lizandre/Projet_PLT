@@ -20,11 +20,11 @@ using namespace client;
 
 int main()
 {
-    GameWithRender game; //Morceau de code Lizandre
+    //Morceau de code Lizandre
+    GameWithRender game;
     game.run();
 
-
-
+    //Morceau de code de Mohammed
     Board board;
     Player joueur;
     //board.createPlayground();
@@ -52,10 +52,11 @@ int main()
     cout << "Loading :  " << endl;
     board.load("test.json");
     board.display();
-    /*
+
+    //Morceau de code de Fayçal
     client::Game game1= client::Game();
     game1.run();
-    */
+
 
     return 0;
 

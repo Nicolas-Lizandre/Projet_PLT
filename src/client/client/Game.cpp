@@ -7,6 +7,7 @@
 #include <array>
 #include <vector>
 #include <string>
+#include <SFML/Window/Touch.hpp>
 
 using namespace std;
 using namespace state;
@@ -34,7 +35,7 @@ void client::Game::run() {
     };
 
     while (true) {
-        board.display();
+        board.display({},getPositions());
         std::array<int, 2> position=players[0].getPosition();
         cout<<"insert piece where? (write (x,y))";
         cin>>s;
@@ -48,7 +49,8 @@ void client::Game::run() {
         }
 
         // Read the position after the insertion
-        std::array<int, 2> position=players[0].getPosition();
+        //std::array<int, 2>
+         position=players[0].getPosition();
         vector<array<int, 2>> atteignables = board.searchPath(position[0],position[1]);
         board.display();
         cout << "Cases atteignables depuis   "<<position[0]<<position[1]<<endl;

@@ -89,6 +89,15 @@ void state::Board::turnMasterPlate(){
 }
 
 void state::Board::display() {
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            playground[i][j]->showPlate();
+        }
+        std::cout << '\n';
+    }
+}
+
+void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
     const std::vector<std::array<int, 2>>& playerPositions)
 {
