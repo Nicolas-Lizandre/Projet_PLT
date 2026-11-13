@@ -109,32 +109,20 @@ file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 
 # Find library SFML
 if(WIN32)
-  set(SFML_ROOT "D:/Utils/SFML-2.3" CACHE PATH
-          "Root directory for SFML library")
-
-  find_package(SFML 3 CONFIG REQUIRED COMPONENTS
-          Graphics Network Window System
-  )
-
-elseif(MACHINE_ENSEA)
-  set(SFML_DIR "/usr/lsa/share/SFML/cmake")
-
-  find_package(SFML 3 CONFIG REQUIRED COMPONENTS Graphics Network Window System)
-
-else()
-  set(SFML_DIR "/usr/lib/x86_64-linux-gnu/cmake/SFML" CACHE PATH "SFML installation directory" FORCE)
-
-  find_package(SFML 3 CONFIG REQUIRED COMPONENTS
-          Graphics Network Window System
-  )
+  set(SFML_ROOT "D:/Utils/SFML-2.3" CACHE STRING
+    "Root directory for SFML library")
+  set(CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH})
+else(WIN32)
+  set(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
+endif(WIN32)
+if(${MACHINE_ENSEA})
+  set(SFML_ROOT "/usr/lsa")
+  set(CMAKE_MODULE_PATH "${SFML_ROOT}/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
 endif()
-
-set(SFML_LIBRARIES
-        SFML::Graphics
-        SFML::Network
-        SFML::Window
-        SFML::System
-)
+find_package(SFML 3 COMPONENTS Graphics Network Window System)
+if(NOT ${MACHINE_ENSEA})
+  set(SFML_LIBRARIES SFML::Graphics SFML::Network SFML::Window SFML::System)
+endif()
 
 # Find library libmicrohttpd
 find_library(

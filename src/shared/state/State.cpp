@@ -4,7 +4,7 @@
 #include "State.h"
 #include <iostream>
 
-state::State::State(): board{}, players{} {
+state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
 
 }
 

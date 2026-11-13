@@ -70,3 +70,44 @@ void state::Plate::showPlate()
 
     std::cout << symbol;
 }
+
+
+std::string state::Plate::getPlateSymbolFromAcesses () {
+    std::string symbol;
+
+    if (North && South && East) {
+        symbol = "├";
+    }
+    else if (North && South && West) {
+        symbol = "┤";
+    }
+    else if (East && South && West) {
+        symbol = "┬";
+    }
+    else if (North && East && West) {
+        symbol = "┴";
+    }
+    else if (North && East) {
+        symbol = "└";
+    }
+    else if (North && West) {
+        symbol = "┘";
+    }
+    else if (South && East) {
+        symbol = "┌";
+    }
+    else if (South && West) {
+        symbol = "┐";
+    }
+    else if (North && South) {
+        symbol = "I";
+    }
+    else if (East && West) {
+        symbol = "-";
+    }
+
+    //std::cout << symbol;
+
+    return symbol;
+}
+

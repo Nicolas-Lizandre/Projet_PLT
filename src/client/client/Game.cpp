@@ -3,19 +3,21 @@
 //
 
 #include "Game.h"
-#include "ListCommands.h"
 #include <iostream>
 #include <array>
 #include <vector>
 #include <string>
+#include <SFML/Window/Touch.hpp>
 
 using namespace std;
 using namespace state;
 
-client::Game::Game() {
+
+client::Game::Game() : state(state::State(mutex)) {
 }
 
 void client::Game::run() {
+
     int PlayerTurn = 0;
     Board &board = state.getBoard();
     board.createPlayground();
@@ -36,7 +38,7 @@ void client::Game::run() {
 
     while (true) {
         cout << "Player" << PlayerTurn <<"'s turn"<<endl;
-        board.showBoard({}, getPositions());
+        board.display({}, getPositions());
 
         bool temp= true;
         while (temp) {
@@ -70,8 +72,7 @@ void client::Game::run() {
         // Read the position after the insertion
         std::array<int, 2> position=players[PlayerTurn].getPosition();
         vector<array<int, 2>> atteignables = board.searchPath(position[0],position[1]);
-        board.showBoard(atteignables, getPositions());
-
+        board.display(atteignables, getPositions());
         cout << "Cases atteignables depuis   "<<position[0]<<position[1]<<endl;
         for (const auto& c : atteignables) {
             cout << "(" << c[0] << "," << c[1] << ") ";

@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-render::ScreenState::ScreenState()=default;
+render::ScreenState::ScreenState(sf::RenderWindow & window) : window(window) {
+
+}
 
 render::ScreenState::~ScreenState() = default;
 
