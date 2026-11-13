@@ -3,16 +3,16 @@
 //
 
 #include "Game.h"
-#include "ListCommands.h"
 #include <iostream>
 using namespace std;
 using namespace state;
 
 
-client::Game::Game() {
+client::Game::Game() : state(state::State(mutex)) {
 }
 
 void client::Game::run() {
+
     Board &board = state.getBoard();
     board.createPlayground();
     std::array<Player, 2> &players=state.getPlayers();

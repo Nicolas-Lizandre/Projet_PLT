@@ -1,5 +1,5 @@
 #include <SFML/Window/Event.hpp>
-#include "Game.h"
+#include "Render.h"
 
 #include <iostream>
 
@@ -13,7 +13,7 @@
 #include "render/completeText.h"
 
 
-render::Game::Game () : list_commands(ListCommands()){ //La liste d'init est bien car elle permet d'éviter les copies
+render::Render::Render (state::State & gamecore, ListCommands & list_commands) : gamecore(gamecore), list_commands(list_commands){ //La liste d'init est bien car elle permet d'éviter les copies
     try {ArialFont::font = sf::Font("../assets/arial.ttf");} //Revoir décla arial.ttf
     catch (...) {std::cout << "Error loading arial.ttf" << std::endl;
         throw std::runtime_error("Error loading arial.ttf");}
@@ -24,15 +24,13 @@ render::Game::Game () : list_commands(ListCommands()){ //La liste d'init est bie
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
     current_screen_state = std::make_unique<TitleScreen>(window);
-    board = state::Board();
-    board.createPlayground();
 }
 
-render::Game::~Game() {
+render::Render::~Render() {
     std::cout << std::endl << "Game destroyed" << std::endl;
 }
 
-void render::Game::run() {
+void render::Render::run() {
     while (window.isOpen()) {
         while (auto event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
@@ -46,14 +44,15 @@ void render::Game::run() {
 
         manageDraw();
         seekDemandNewScreen();
-        execQueriedCommands();
+        //Comment s'occuper des commandes à exec en permanence ?????
+        list_commands.exeAll(); //WIP ce bout de code est à dégager dans Game
     }
 }
 
-void render::Game::manageGUI_Event (sf::Event &event) {
+void render::Render::manageGUI_Event (sf::Event &event) {
     current_screen_state->handleEvents(event);
 }
-void render::Game::manageDraw() {
+void render::Render::manageDraw() {
     current_screen_state->drawablesUpdate();  //Peut se mettre dans le run ? - Mettre une condition pour optimiser
     window.clear();
     const std::vector<completeSprite> & sprites = current_screen_state->getSprites();
@@ -69,7 +68,7 @@ void render::Game::manageDraw() {
     window.display();
 }
 /// lecture du champ de current_State de New ScreenStateQuerried
-void render::Game::seekDemandNewScreen () {
+void render::Render::seekDemandNewScreen () {
     if(current_screen_state->getDemandScreenChange() != NO_QUERY) {
         if(current_screen_state->getDemandScreenChange() == TITLESCREEN) {
             current_screen_state = std::make_unique<TitleScreen>(window);
@@ -78,13 +77,11 @@ void render::Game::seekDemandNewScreen () {
             current_screen_state = std::make_unique<GameModeScreen>(window);
         }
         else if(current_screen_state->getDemandScreenChange() == GAMESCREEN) {
-            current_screen_state = std::make_unique<GameScreen>(window,board,list_commands);
+            current_screen_state = std::make_unique<GameScreen>(window,gamecore,list_commands);
         }
 
     }
 
 }
 
-void render::Game::execQueriedCommands() {
-    list_commands.exeAll();
-}
+

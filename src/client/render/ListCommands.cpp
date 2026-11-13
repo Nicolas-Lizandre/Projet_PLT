@@ -1,10 +1,11 @@
 #include "ListCommands.h"
 #include "Command.h"
 #include <iostream>
+#include <shared_mutex>
 
 using namespace render;
 
-ListCommands::ListCommands() {
+ListCommands::ListCommands(std::mutex & mutex) : mutex(mutex) {
     //rules = RulesAPI();
 }
 

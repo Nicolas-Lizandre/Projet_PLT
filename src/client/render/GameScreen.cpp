@@ -42,8 +42,8 @@ inline const std::array<sf::Vector2f, 12> respective_graybox_position{
 ScreenStateQUERIED GameScreen::getDemandScreenChange () {
     return demand_screen_change;
 }
-GameScreen::GameScreen (sf::RenderWindow & window, state::Board & board, ListCommands & list_commands)
-: ScreenState(window), board(board), list_commands(list_commands) {
+GameScreen::GameScreen (sf::RenderWindow & window, state::State & gamecore, ListCommands & list_commands)
+: ScreenState(window), gamecore(gamecore), list_commands(list_commands) {
     std::cout << "Created GameScreen" << std::endl;
 
     //Les assets suivants seront générés à chaque appels de draw donc on peut directement
@@ -128,7 +128,7 @@ void GameScreen::handleEvents (sf::Event & event) {
                     if(complete_sprite.sprite->getGlobalBounds().contains(mousePos)) {
                         std::cout << "graybox selected" << std::endl;
                         sf::Vector2i insert_coord = getInsertCoordinatesFromGrayBoxBonds(complete_sprite);
-                        list_commands.add(std::make_unique<InsertPlateCOMMAND>(board,insert_coord.x,insert_coord.y));
+                        list_commands.add(std::make_unique<InsertPlateCOMMAND>(gamecore.getBoard(),insert_coord.x,insert_coord.y));
                         //mousePos suffit pour deviner lequel c'est
                     }
                 }
@@ -155,7 +155,7 @@ void GameScreen::handleEvents (sf::Event & event) {
             for (auto & complete_sprite : list_complete_sprites) {
                 if(complete_sprite.name_id == "masterplate_graybox") {
                     if(complete_sprite.sprite->getGlobalBounds().contains(mousePos)) {
-                        list_commands.add(std::make_unique<rotateMasterplateCOMMAND>(board));
+                        list_commands.add(std::make_unique<rotateMasterplateCOMMAND>(gamecore.getBoard()));
                         std::cout << "masterplate_graybox selected" << std::endl;
                     }
                 }
@@ -189,11 +189,11 @@ void GameScreen::drawablesUpdate() {
             ++it;
     }
     //playground Plates
-    for(int i = 0; i < board.getPlayground().size(); i++) {
-        for(int j = 0; j < board.getPlayground()[i].size(); j++) {
+    for(int i = 0; i < gamecore.getBoard().getPlayground().size(); i++) {
+        for(int j = 0; j < gamecore.getBoard().getPlayground()[i].size(); j++) {
             //std::cout << board.getPlayground()[i].size() << std::endl;
             //createAdequateSprite ("I" by default)
-            auto& plate = board.getPlayground()[i][j];
+            auto& plate = gamecore.getBoard().getPlayground()[i][j];
             if (plate){
                 cd.respective_texture =std::make_unique<sf::Texture>(selectCorrespondingPlate(*plate));
             }
@@ -211,7 +211,7 @@ void GameScreen::drawablesUpdate() {
     }
 
     //MasterPlate
-    cd.respective_texture =std::make_unique<sf::Texture>(selectCorrespondingPlate(board.getMasterplate()));
+    cd.respective_texture =std::make_unique<sf::Texture>(selectCorrespondingPlate(gamecore.getBoard().getMasterplate()));
     cd.sprite = std::make_unique<sf::Sprite>(sf::Sprite(*cd.respective_texture)); //0, 0, 800, 600
     cd.sprite->setPosition(sf::Vector2f(575.f, 150.f)); //Pareil que masterplate_graybox (un code plus propre l'aurait cherché puis appliqué)
     cd.sprite->setScale(sf::Vector2f(4.f, 4.f));
