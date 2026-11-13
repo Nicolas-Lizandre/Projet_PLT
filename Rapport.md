@@ -1,18 +1,41 @@
-# Projet Logiciel Transversal
+# Projet Logiciel Transversal - Labyrinth (c)
 
----
-
-#### Prénom NOM – Prénom NOM
+#### Equipe
+- FADE Lizandre
+- PICQUART Tom
+- BOUIDDOUH Fayçal
+- GHERRAS Mohammed-Amine
 
 ---
 
 ## 1 Objectif
 
 ### 1.1 Présentation générale
-Présenter ici une description générale du projet. On peut s'appuyer sur des schémas ou croquis pour illustrer cette présentation. Éventuellement, proposer des projets existants et/ou captures d'écrans permettant de rapidement comprendre la nature du projet.
+*Présenter ici une description générale du projet. On peut s'appuyer sur des schémas ou croquis pour illustrer cette présentation. Éventuellement, proposer des projets existants et/ou captures d'écrans permettant de rapidement comprendre la nature du projet.*
+
+Ce projet consiste à coder les règles d'un jeu de plateau : Labyrinth (c) de la société Ravensburger.
+
+L'objectif est de créer une interface graphique pour pouvoir jouer jusqu'à 4 joueurs, en local, en ligne ou contre des IA.
+
+Les IA ***vont pouvoir être réglées*** selon 3 niveaux de difficulté : 
+- MOA : L'IA se déplace aléatoirement parmi tous les coups possibles, et capture un trésor si c'est possible.
+- TOM : L'IA tente les différentes positions et regarde celle qui rapproche le plus du trésor: l'heuristique donne un score qui reflète à quel point le joueur est proche de son trésor.
+- MAX : L'IA tente quelque chose (à déterminer), peut-être qu'elle chercherait aussi à bloquer le joueur adverse.
+
+
 
 ### 1.2 Règles du jeu
-Présenter ici une description des principales règles du jeu. Il doit y avoir suffisamment d'éléments pour pouvoir former entièrement le jeu, sans pour autant entrer dans les détails . Notez que c'est une description en «français» qui est demandé, il n'est pas question d'informatique et de programmation dans cette section.
+*Présenter ici une description des principales règles du jeu. Il doit y avoir suffisamment d'éléments pour pouvoir former entièrement le jeu, sans pour autant entrer dans les détails . Notez que c'est une description en «français» qui est demandé, il n'est pas question d'informatique et de programmation dans cette section.*
+
+Ce jeu se compose d'un plateau de 49 pièces (7x7) et d'une pièce libre (qu'on appelera la MasterPlate). Il y a 24 trésors cachés dans le labyrinthe.
+Le but du jeu est trouver une liste de trésors (les 24 sont répartis équitablement entre les 2, 3 ou 4 joueurs de la partie) en parcourant le labyrinthe. Le premier joueur qui récupère tous ses trésors et qui revient à son point de départ remporte la partie.
+
+Un tour se compose en 2 étapes : 
+
+ - Déplacer le labyrinthe (insérer la MasterPlate sur l'une des 12 positions disponibles, OBLIGATOIRE)
+ - Se déplacer sur l'un des emplacements possibles. (Facultatif, le joueur peut rester sur place)
+
+
 
 ### 1.3 Conception Logiciel
 Présenter ici les packages de votre solution, ainsi que leurs dépendances.
