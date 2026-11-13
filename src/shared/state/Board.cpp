@@ -35,7 +35,7 @@ bool state::Board::verifyInsertValidity(int i, int j) {
     return false;
 }
 
-void state::Board::insertPlate(int i, int j) {
+bool state::Board::insertPlate(int i, int j) {
     if (verifyInsertValidity(i,j)) {
         auto tempPlate = std::move(masterplate);
         switch (i) {
@@ -45,7 +45,7 @@ void state::Board::insertPlate(int i, int j) {
                     playground[l][j] = std::move(playground[l - 1][j]);
                 }
                 playground[0][j] = std::move(tempPlate);
-                return;
+                return true;
 
             case 6:
                 masterplate = std::move(playground[0][j]);
@@ -53,7 +53,7 @@ void state::Board::insertPlate(int i, int j) {
                     playground[l][j] = std::move(playground[l + 1][j]);
                 }
                 playground[6][j]=std::move(tempPlate);
-                return;
+                return true;
         }
 
         switch (j) {
@@ -63,7 +63,7 @@ void state::Board::insertPlate(int i, int j) {
                     playground[i][l] = std::move(playground[i][l-1]);
                 }
                 playground[i][0]=std::move(tempPlate);
-                return;
+                return true;
 
             case 6:
                 masterplate = std::move(playground[i][0]);
@@ -71,9 +71,10 @@ void state::Board::insertPlate(int i, int j) {
                     playground[i][l] = std::move(playground[i][l+1]);
                 }
                 playground[i][6]=std::move(tempPlate);
-                return;
+                return true;
         }
     }
+    return false;
 }
 
 
@@ -81,11 +82,49 @@ void state::Board::turnMasterPlate(){
     masterplate->turnPlate();
 }
 
-void state::Board::showBoard() {
+void state::Board::showBoard(
+    const std::vector<std::array<int, 2>>& reachable,
+    const std::vector<std::array<int, 2>>& playerPositions)
+{
+    const char* const RESET = "\033[0m";
+    const char* const YELLOW = "\033[1;33m";
+
+    const char* const PLAYER_COLORS[2] = {
+        "\033[1;37;42m", // White text, green background
+        "\033[1;37;41m"  // White text, red background
+    };
+
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
-            playground[i][j]->showPlate();
+            const char* couleur = RESET;
+
+            // Highlight reachable cells
+            for (const auto& c : reachable) {
+                if (c[0] == i && c[1] == j) {
+                    couleur = YELLOW;
+                    break;
+                }
+            }
+
+            // Player colors take priority
+            for (std::size_t k = 0; k < playerPositions.size(); ++k) {
+                if (playerPositions[k][0] == i &&
+                    playerPositions[k][1] == j) {
+                    couleur = PLAYER_COLORS[k % 2];
+                }
+            }
+
+            std::cout << couleur;
+
+            if (playground[i][j]) {
+                playground[i][j]->showPlate();
+            } else {
+                std::cout << '?';
+            }
+
+            std::cout << RESET;
         }
+
         std::cout << '\n';
     }
 }
@@ -96,22 +135,20 @@ void state::Board::createPlayground() {
             plate = std::make_unique<state::L>();
         }
     }
-    playground[0][5] = std::make_unique<state::I>();
-    playground[0][5]->turnPlate();
     masterplate = std::make_unique<state::T>();
 }
 
 std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
 {
     std::vector<std::array<int, 2>> reachable;
- 
+
     if (i < 0 || i >= 7 || j < 0 || j >= 7) return reachable;
- 
+
     if (!playground[i][j]) return reachable;
- 
+
     const int di[4] = { -1, 0, 1, 0 };
     const int dj[4] = { 0, 1, 0, -1 };
- 
+
     auto isOpen = [this](int a, int b, int dir) {
         const std::unique_ptr<Plate>& plate = playground[a][b];
         if (!plate) return false;
@@ -123,35 +160,34 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
         default: return false;
         }
     };
- 
-    bool visited[7][7] = {};               
-    std::queue<std::array<int, 2>> file;   
- 
+
+    bool visited[7][7] = {};
+    std::queue<std::array<int, 2>> file;
+
     visited[i][j] = true;
     file.push({ i, j });
- 
+
     while (!file.empty()) {
-        std::array<int, 2> courante = file.front();   
-        file.pop();                                   
-        reachable.push_back(courante);                
- 
-        for (int dir = 0; dir < 4; ++dir) {           
+        std::array<int, 2> courante = file.front();
+        file.pop();
+        reachable.push_back(courante);
+
+        for (int dir = 0; dir < 4; ++dir) {
             int ni = courante[0] + di[dir];
             int nj = courante[1] + dj[dir];
- 
-            if (ni < 0 || ni >= 7 || nj < 0 || nj >= 7) continue;   
-            if (visited[ni][nj]) continue;                          
- 
+
+            if (ni < 0 || ni >= 7 || nj < 0 || nj >= 7) continue;
+            if (visited[ni][nj]) continue;
+
             if (isOpen(courante[0], courante[1], dir) &&
                 isOpen(ni, nj, (dir + 2) % 4)) {
-                visited[ni][nj] = true;     
+                visited[ni][nj] = true;
                 file.push({ ni, nj });
             }
         }
     }
     return reachable;
 }
-
 
 std::array<std::array<std::unique_ptr<state::Plate>, 7>, 7> &state::Board::getPlayground() {
     return playground;
