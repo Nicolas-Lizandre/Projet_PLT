@@ -34,8 +34,8 @@ void client::Game::run() {
     };
 
     while (true) {
-        board.showBoard({}, getPositions());
-
+        board.display();
+        std::array<int, 2> position=players[0].getPosition();
         cout<<"insert piece where? (write (x,y))";
         cin>>s;
         mov[0] = s[1] - '0';
@@ -50,8 +50,7 @@ void client::Game::run() {
         // Read the position after the insertion
         std::array<int, 2> position=players[0].getPosition();
         vector<array<int, 2>> atteignables = board.searchPath(position[0],position[1]);
-        board.showBoard(atteignables, getPositions());
-
+        board.display();
         cout << "Cases atteignables depuis   "<<position[0]<<position[1]<<endl;
         for (const auto& c : atteignables) {
             cout << "(" << c[0] << "," << c[1] << ") ";
