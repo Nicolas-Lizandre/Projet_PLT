@@ -30,7 +30,7 @@ int main()
     //board.createPlayground();
     board.display();
     board.save("test.json");
-    
+
     vector<array<int, 2>> atteignables = board.searchPath(0, 0);
     /*
     vector<array<int, 2>> atteignables2 = board.searchPath(2, 0);

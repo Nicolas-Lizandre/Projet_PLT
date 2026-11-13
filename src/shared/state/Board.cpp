@@ -81,6 +81,7 @@ bool state::Board::insertPlate(int i, int j) {
                 return true;
         }
     }
+    return false;
 }
 
 
@@ -150,8 +151,6 @@ void state::Board::createPlayground() {
             plate = std::make_unique<state::L>();
         }
     }
-    playground[0][5] = std::make_unique<state::I>();
-    playground[0][5]->turnPlate();
     masterplate = std::make_unique<state::T>();
 }
 

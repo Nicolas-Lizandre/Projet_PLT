@@ -18,29 +18,50 @@ client::Game::Game() : state(state::State(mutex)) {
 
 void client::Game::run() {
 
+    int PlayerTurn = 0;
     Board &board = state.getBoard();
     board.createPlayground();
     std::array<Player, 2> &players=state.getPlayers();
+    players[1].move(6,6);
     string s;
     std::array<int, 2> mov;
+
 
     // Collect the current player positions
     auto getPositions = [&players]() {
         vector<array<int, 2>> positions;
-        //for (auto &player : players) {
-        //    positions.push_back(player.getPosition());
-        //}
-        positions.push_back(players[0].getPosition());
+        for (auto &player : players) {
+            positions.push_back(player.getPosition());
+        }
         return positions;
     };
 
     while (true) {
-        board.display({},getPositions());
-        std::array<int, 2> position=players[0].getPosition();
-        cout<<"insert piece where? (write (x,y))";
+        cout << "Player" << PlayerTurn <<"'s turn"<<endl;
+        board.display({}, getPositions());
+
+        bool temp= true;
+        while (temp) {
+            cout<<"Do you want to turn the plate? (y/n)";
+            cin>>s;
+            if (s == "y") {
+                board.turnMasterPlate();
+            }
+            else if (s == "n") {
+                temp= false;
+            }
+        }
+
+
+        cout<<"insert plate where? (write xy)";
         cin>>s;
-        mov[0] = s[1] - '0';
-        mov[1] = s[3] - '0';
+        while (s.size() != 2) {
+            cout << "Incorrect message length" << endl;
+            cout<<"insert plate where? (write xy)";
+            cin>>s;
+        }
+        mov[0] = s[0] - '0';
+        mov[1] = s[1] - '0';
 
         // Update tiles and players together
         if (!state.applyInsertion(mov[0],mov[1])) {
@@ -49,25 +70,29 @@ void client::Game::run() {
         }
 
         // Read the position after the insertion
-        //std::array<int, 2>
-         position=players[0].getPosition();
+        std::array<int, 2> position=players[PlayerTurn].getPosition();
         vector<array<int, 2>> atteignables = board.searchPath(position[0],position[1]);
-        board.display();
+        board.display(atteignables, getPositions());
         cout << "Cases atteignables depuis   "<<position[0]<<position[1]<<endl;
         for (const auto& c : atteignables) {
             cout << "(" << c[0] << "," << c[1] << ") ";
             cout <<"\n";
         }
 
-        cout<<"move to? (write (x,y))";
+        cout<<"move to? (write xy)";
         cin>>s;
-        mov[0] = s[1] - '0';
-        mov[1] = s[3] - '0';
+        while (s.size() != 2) {
+            cout << "Incorrect message length" << endl;
+            cout<<"move to? (write xy)";
+            cin>>s;
+        }
+        mov[0] = s[0] - '0';
+        mov[1] = s[1] - '0';
 
         if (state.verifyMovementValidity(mov[0],mov[1],atteignables)) {
-            players[0].move(mov[0],mov[1]);
+            players[PlayerTurn].move(mov[0],mov[1]);
         }
-
+        PlayerTurn = (PlayerTurn+1)%2;
         cout << endl;
     }
 }
