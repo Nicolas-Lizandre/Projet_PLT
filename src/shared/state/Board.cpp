@@ -137,6 +137,10 @@ void state::Board::turnMasterPlate(){
     }
 }*/
 
+void Board::displayMasterplate() {
+    masterplate->display();
+}
+
 void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
     const std::vector<std::array<int, 2>>& playerPositions,
@@ -180,7 +184,7 @@ void state::Board::display(
 
             std::cout << color;
             if (plate) {
-                plate->showPlate();
+                plate->display();
             } else {
                 std::cout << '?';
             }

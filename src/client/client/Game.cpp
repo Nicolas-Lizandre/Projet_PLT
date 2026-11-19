@@ -98,7 +98,9 @@ void client::Game::run() {
 
         bool temp = true;
         while (temp) {
-            cout << "Do you want to turn the plate? (y/n)";
+            cout << " Masterplate: ";
+            board.displayMasterplate();
+            cout << " \n Do you want to turn the plate? (y/n)";
             cin >> s;
 
             if (s == "y") {

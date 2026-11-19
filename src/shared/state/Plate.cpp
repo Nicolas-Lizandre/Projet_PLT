@@ -33,7 +33,7 @@ bool state::Plate::getWest() const {
     return West;
 }
 
-void state::Plate::showPlate()
+void state::Plate::display()
 {
     const char* symbol = " ";
 
