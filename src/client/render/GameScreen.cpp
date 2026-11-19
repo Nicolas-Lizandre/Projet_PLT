@@ -128,7 +128,7 @@ void GameScreen::handleEvents (sf::Event & event) {
                     if(complete_sprite.sprite->getGlobalBounds().contains(mousePos)) {
                         std::cout << "graybox selected" << std::endl;
                         sf::Vector2i insert_coord = getInsertCoordinatesFromGrayBoxBonds(complete_sprite);
-                        list_commands.add(std::make_unique<InsertPlateCOMMAND>(gamecore.getBoard(),insert_coord.x,insert_coord.y));
+                        list_commands.add(std::make_unique<InsertPlateCOMMAND>(gamecore,insert_coord.x,insert_coord.y));
                         //mousePos suffit pour deviner lequel c'est
                     }
                 }
@@ -155,7 +155,7 @@ void GameScreen::handleEvents (sf::Event & event) {
             for (auto & complete_sprite : list_complete_sprites) {
                 if(complete_sprite.name_id == "masterplate_graybox") {
                     if(complete_sprite.sprite->getGlobalBounds().contains(mousePos)) {
-                        list_commands.add(std::make_unique<rotateMasterplateCOMMAND>(gamecore.getBoard()));
+                        list_commands.add(std::make_unique<rotateMasterplateCOMMAND>(gamecore));
                         std::cout << "masterplate_graybox selected" << std::endl;
                     }
                 }

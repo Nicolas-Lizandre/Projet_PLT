@@ -10,8 +10,7 @@
 using namespace render;
 
 
-//InsertPlateCOMMAND::InsertPlateCOMMAND (state::State & state, int i, int j) : state(state), i(i), j(j) {}
-InsertPlateCOMMAND::InsertPlateCOMMAND (state::Board & board, int i, int j) : board(board), i(i), j(j) {}
+InsertPlateCOMMAND::InsertPlateCOMMAND (state::State & gamecore, int i, int j) : gamecore(gamecore), i(i), j(j) {}
 void InsertPlateCOMMAND::exec() {
-    board.insertPlate(i,j);
+    gamecore.getBoard().insertPlate(i,j); // verify à l'intérieur
 }
