@@ -14,8 +14,25 @@ std::array<int, 2>  state::Player::getPosition () {
     return position;
 }
 
-void state::Player::obtainTreasure(State *state) {
-    treasure_index+=1;
+state::Treasure state::Player::getCurrentTreasure() const {
+    if (treasure_index >= static_cast<int>(treasure_list.size())) {
+        return Treasure::NONE;
+    }
+
+    return treasure_list[treasure_index];
+}
+
+void state::Player::setTreasureList(
+    const std::array<state::Treasure, 12>& treasures)
+{
+    treasure_list = treasures;
+    treasure_index = 0;
+}
+
+void state::Player::advanceTreasure() {
+    if (treasure_index < static_cast<int>(treasure_list.size())) {
+        ++treasure_index;
+    }
 }
 
 state::Player::Player(int i, int j) {

@@ -90,7 +90,7 @@ void state::Board::turnMasterPlate(){
 }
 
 
-void state::Board::display(
+/*void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
     const std::vector<std::array<int, 2>>& playerPositions)
 {
@@ -135,16 +135,98 @@ void state::Board::display(
 
         std::cout << '\n';
     }
+}*/
+
+void state::Board::display(
+    const std::vector<std::array<int, 2>>& reachable,
+    const std::vector<std::array<int, 2>>& playerPositions,
+    Treasure expected)
+{
+    const char* reset = "\033[0m";
+    const char* reachableColor = "\033[1;33m";
+    const char* treasureColor = "\033[1;30;105m";
+    const std::array<const char*, 4> playerColors = {
+        "\033[1;37;42m", "\033[1;37;41m",
+        "\033[1;37;44m", "\033[1;37;46m"
+    };
+
+    std::cout << "\n     ";
+    for (int j = 0; j < 7; ++j) {
+        std::cout << j << "   ";
+    }
+    std::cout << '\n';
+
+    for (int i = 0; i < 7; ++i) {
+        std::cout << " " << i << "  ";
+        for (int j = 0; j < 7; ++j) {
+            const std::array<int, 2> position = {i, j};
+            Plate* plate = playground[i][j].get();
+            const bool isReachable =
+                std::find(reachable.begin(), reachable.end(), position) !=
+                reachable.end();
+            const bool isObjective =
+                expected != Treasure::NONE && plate &&
+                plate->hasTreasure(expected);
+            const char* color = isObjective ? treasureColor :
+                (isReachable ? reachableColor : reset);
+
+            for (std::size_t k = 0;
+                 k < playerPositions.size() && k < playerColors.size(); ++k) {
+                if (playerPositions[k] == position) {
+                    color = playerColors[k];
+                    break;
+                }
+            }
+
+            std::cout << color;
+            if (plate) {
+                plate->showPlate();
+            } else {
+                std::cout << '?';
+            }
+            if (isObjective) {
+                const int id = static_cast<int>(expected);
+                std::cout << treasureColor << (id < 10 ? "0" : "") << id;
+            } else {
+                std::cout << "  ";
+            }
+            std::cout << reset << ' ';
+        }
+        std::cout << '\n';
+    }
+
+    std::cout << reachableColor << " Case atteignable " << reset << '\n';
 }
 
-void state::Board::createPlayground() {
+/*void state::Board::createPlayground() {
     for (auto& row : playground) {
         for (auto& plate : row) {
             plate = std::make_unique<state::L>();
+            plate->setTreasure(Treasure::NONE);
         }
     }
     masterplate = std::make_unique<state::T>();
-}
+    masterplate->setTreasure(Treasure::NONE);
+
+    std::vector<std::array<int, 2>> treasurePositions;
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            const bool isCorner =
+                (i == 0 || i == 6) && (j == 0 || j == 6);
+            if (!isCorner) {
+                treasurePositions.push_back({i, j});
+            }
+        }
+    }
+
+    std::mt19937 generator(std::random_device{}());
+    std::shuffle(treasurePositions.begin(), treasurePositions.end(), generator);
+    for (int id = 1; id <= static_cast<int>(Treasure::GEM); ++id) {
+        const auto& position = treasurePositions[id - 1];
+        playground[position[0]][position[1]]->setTreasure(
+            static_cast<Treasure>(id));
+    }
+}*/
 
 std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
 {
@@ -195,6 +277,15 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
         }
     }
     return reachable;
+}
+
+bool state::Board::hasTreasureAt(
+    int i, int j, Treasure expected) const
+{
+    if (i < 0 || i >= 7 || j < 0 || j >= 7 || !playground[i][j]) {
+        return false;
+    }
+    return playground[i][j]->hasTreasure(expected);
 }
 // Helpers :
 
@@ -396,6 +487,38 @@ void state::Board::shuffle() {
             masterplate = std::make_unique<state::T>();
     } else if (num_L > 0) {
             masterplate = std::make_unique<state::L>();
+    }
+
+    std::vector<std::array<int, 2>> treasurePositions;
+
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            playground.at(i).at(j)->setTreasure(Treasure::NONE);
+
+            const bool isCorner =
+                (i == 0 || i == 6) && (j == 0 || j == 6);
+
+            if (!isCorner) {
+                treasurePositions.push_back({i, j});
+            }
+        }
+    }
+
+    masterplate->setTreasure(Treasure::NONE);
+
+    // Place each treasure exactly once
+    std::shuffle(
+        treasurePositions.begin(),
+        treasurePositions.end(),
+        generator
+    );
+
+    for (int id = 1; id <= static_cast<int>(Treasure::GEM); ++id) {
+        const auto& position = treasurePositions[id - 1];
+
+        playground.at(position[0]).at(position[1])->setTreasure(
+            static_cast<Treasure>(id)
+        );
     }
 
 }

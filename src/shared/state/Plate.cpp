@@ -72,7 +72,7 @@ void state::Plate::showPlate()
 }
 
 
-std::string state::Plate::getPlateSymbolFromAcesses () {
+std::string state::Plate::getPlateSymbolFromAcesses () const {
     std::string symbol;
 
     if (North && South && East) {
@@ -111,3 +111,10 @@ std::string state::Plate::getPlateSymbolFromAcesses () {
     return symbol;
 }
 
+bool state::Plate::hasTreasure(Treasure expected) const {
+    return expected != Treasure::NONE && treasure == expected;
+}
+
+void state::Plate::setTreasure(Treasure value) {
+    treasure = value;
+}

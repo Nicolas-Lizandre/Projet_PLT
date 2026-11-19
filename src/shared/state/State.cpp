@@ -58,3 +58,21 @@ void state::State::movePlayers(int i, int j) {
         }
     }
 }
+
+bool state::State::obtainTreasure(int playerIndex) {
+    if (playerIndex < 0 ||
+        playerIndex >= static_cast<int>(players.size())) {
+        return false;
+    }
+
+    Player &player = players[playerIndex];
+    std::array<int, 2> position = player.getPosition();
+
+    if (!board.hasTreasureAt(position[0], position[1],
+                            player.getCurrentTreasure())) {
+        return false;
+    }
+
+    player.advanceTreasure();
+    return true;
+}
