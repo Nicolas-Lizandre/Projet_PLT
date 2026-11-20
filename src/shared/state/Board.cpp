@@ -95,14 +95,13 @@ void state::Board::turnMasterPlate(){
 
 void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
-    const std::vector<std::array<int, 2>>& playerPositions,
-    Treasure expected) {
-    const char* reset = "\033[0m";
-    const char* reachableColor = "\033[1;33m";
-    const char* treasureColor = "\033[1;30;105m";
-    const std::array<const char*, 4> playerColors = {
-        "\033[1;37;42m", "\033[1;37;41m",
-        "\033[1;37;44m", "\033[1;37;46m"
+    const std::vector<std::array<int, 2>>& playerPositions, Treasure expected) {
+        const char* reset = "\033[0m";
+        const char* reachableColor = "\033[1;33m";
+        const char* treasureColor = "\033[1;30;105m";
+        const std::array<const char*, 4> playerColors = {
+            "\033[1;37;42m", "\033[1;37;41m",
+            "\033[1;37;44m", "\033[1;37;46m"
     };
 
     std::cout << "\n     ";

@@ -12,5 +12,9 @@ using namespace render;
 
 InsertPlateCOMMAND::InsertPlateCOMMAND (state::State & gamecore, int i, int j) : gamecore(gamecore), i(i), j(j) {}
 void InsertPlateCOMMAND::exec() {
-    gamecore.getBoard().insertPlate(i,j); // verify à l'intérieur
+    if(gamecore.getPlayingPhase() == state::INSERT_PIECE) {
+        gamecore.getBoard().insertPlate(i,j);
+        gamecore.advanceTurn();
+    } // verify à l'intérieur
+
 }

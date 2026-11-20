@@ -118,6 +118,12 @@ std::string state::Plate::getPlateAssetFromAcesses () const {
     return asset_path;
 }
 
+state::Treasure state::Plate::getTreasure() const {
+    return treasure;
+}
+
+
+/*
 std::string state::Plate::getPlateTreasureAsset () const {
     std::string asset_path;
     switch (treasure) { //NONE + 24 Trésors
@@ -149,6 +155,6 @@ std::string state::Plate::getPlateTreasureAsset () const {
     }
     return asset_path;
 
-}
+}*/
 
 

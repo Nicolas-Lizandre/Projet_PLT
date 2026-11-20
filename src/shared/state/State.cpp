@@ -16,6 +16,10 @@ std::array<state::Player, 2>& state::State::getPlayers()  {
     return players;
 }
 
+
+
+
+
 bool state::State::verifyMovementValidity(int i, int j,std::vector<std::array<int, 2>> legal_moves ) {
     for ( auto& pos : legal_moves) {
         if (pos[0] == i && pos[1] == j) {
@@ -75,4 +79,50 @@ bool state::State::obtainTreasure(int playerIndex) {
 
     player.advanceTreasure();
     return true;
+}
+
+
+
+
+state::TurnPhase state::State::getPlayingPhase () {
+    return playing_phase;
+}
+
+int state::State::getPlayingPiecePlayerID () {
+    switch (playing_piece) {
+        case(GREEN_PIECE) : return 0;
+        case(RED_PIECE) : return 1;
+    }
+    return 0;
+}
+
+state::Piece state::State::getPlayingPiece () {
+    return playing_piece;
+}
+void state::State::advanceTurn () {
+    std::cout << "hello" << std::endl;
+    std::cout << playing_piece << std::endl;
+    std::cout << playing_phase << std::endl;
+
+    if (playing_phase == INSERT_PIECE) {
+        playing_phase = MOVE;
+        return;
+    }
+
+    if (playing_phase == MOVE) {
+        switch (playing_piece) {
+            case(GREEN_PIECE) : playing_piece = RED_PIECE; break;
+            case(RED_PIECE) : playing_piece = GREEN_PIECE; break;
+        }
+        playing_phase = INSERT_PIECE;
+        return;
+    }
+
+}
+
+void state::State::initPlayingPiece (){
+    playing_piece = GREEN_PIECE;
+}
+void state::State::initPlayingPhase () {
+    playing_phase = INSERT_PIECE;
 }

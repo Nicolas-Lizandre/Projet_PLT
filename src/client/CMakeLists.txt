@@ -24,6 +24,7 @@ add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources}
         render/rotateMasterPlateCOMMAND.cpp
         render/Command.cpp
         client/GameWithRender.cpp
+        render/moveCOMMAND.cpp
         render/moveCOMMAND.cpp)
 add_dependencies(${lib_client_target} generate-headers)
 target_include_directories(${lib_client_target} PUBLIC
@@ -43,7 +44,12 @@ target_compile_options(${lib_client_target} PUBLIC
   -Wall -Wextra 
 )
 # Compile "client" executable
-add_executable(${client_target} main.cpp)
+add_executable(${client_target} main.cpp
+        render/moveCOMMAND.cpp
+        render/moveCOMMAND.h
+        render/moveCOMMAND.cpp
+        render/moveCOMMAND.cpp
+        render/moveCOMMAND.cpp)
 target_link_libraries(${client_target} PUBLIC 
   ${lib_client_target}
 )

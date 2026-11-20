@@ -3,6 +3,9 @@
 //
 #include "Player.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "State.h"
 
 void state::Player::move(int i, int j) {
@@ -21,6 +24,11 @@ state::Treasure state::Player::getCurrentTreasure() const {
 
     return treasure_list[treasure_index];
 }
+
+int state::Player::getTreasureIndex () {
+    return treasure_index;
+}
+
 
 void state::Player::setTreasureList(
     const std::array<state::Treasure, 12>& treasures)

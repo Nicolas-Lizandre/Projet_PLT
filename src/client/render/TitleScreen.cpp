@@ -61,7 +61,7 @@ TitleScreen::TitleScreen(sf::RenderWindow & window) : ScreenState(window) {
     cdt.text = std::make_unique<sf::Text>(button_commencer_text);
     list_complete_texts.push_back(std::move(cdt));
 
-    sf::Text versionBuild = sf::Text(ArialFont::font, std::string("v0.2"), 20);
+    sf::Text versionBuild = sf::Text(ArialFont::font, std::string("v0.3"), 20);
     versionBuild.setFillColor(sf::Color::Black);
     versionBuild.setPosition(sf::Vector2f(20, 570));
     cdt.text = std::make_unique<sf::Text>(versionBuild);
