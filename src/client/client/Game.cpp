@@ -96,32 +96,33 @@ void client::Game::run() {
                  << startingPositions[PlayerTurn][1] << ")." << endl;
         }
 
-        bool temp = true;
-        while (temp) {
-            cout << " Masterplate: ";
-            board.displayMasterplate();
-            cout << " \n Do you want to turn the plate? (y/n)";
-            cin >> s;
-
-            if (s == "y") {
-                board.turnMasterPlate();
-            } else if (s == "n") {
-                temp = false;
-            }
-        }
-
-        cout << "insert plate where? (write xy)";
-        cin >> s;
-
-        while (s.size() != 2) {
-            cout << "Incorrect message length" << endl;
-            cout << "insert plate where? (write xy)";
-            cin >> s;
-        }
-
-        mov[0] = s[0] - '0';
-        mov[1] = s[1] - '0';
-
+        //old code:
+        //
+        // bool temp = true;
+        // while (temp) {
+        //     cout << " Masterplate: ";
+        //     board.displayMasterplate();
+        //     cout << " \n Do you want to turn the plate? (y/n)";
+        //     cin >> s;
+        //
+        //     if (s == "y") {
+        //         board.turnMasterPlate();
+        //     } else if (s == "n") {
+        //         temp = false;
+        //     }
+        // }
+        //
+        // cout << "insert plate where? (write xy)";
+        // cin >> s;
+        //
+        // while (s.size() != 2) {
+        //     cout << "Incorrect message length" << endl;
+        //     cout << "insert plate where? (write xy)";
+        //     cin >> s;
+        // }
+        // mov[0] = s[0] - '0';
+        // mov[1] = s[1] - '0';
+        mov = players[PlayerTurn]->chooseInsert(board);
         // Update tiles and players together
         if (!state.applyInsertion(mov[0], mov[1])) {
             cout << "Illegal insertion" << endl;
@@ -145,17 +146,19 @@ void client::Game::run() {
             cout << "\n";
         }
 
-        cout << "move to? (write xy)";
-        cin >> s;
+        // cout << "move to? (write xy)";
+        // cin >> s;
+        //
+        // while (s.size() != 2) {
+        //     cout << "Incorrect message length" << endl;
+        //     cout << "move to? (write xy)";
+        //     cin >> s;
+        // }
+        //
+        // mov[0] = s[0] - '0';
+        // mov[1] = s[1] - '0';
 
-        while (s.size() != 2) {
-            cout << "Incorrect message length" << endl;
-            cout << "move to? (write xy)";
-            cin >> s;
-        }
-
-        mov[0] = s[0] - '0';
-        mov[1] = s[1] - '0';
+        mov = players[PlayerTurn]->chooseMovement(atteignables,board);
 
         if (state.verifyMovementValidity(mov[0], mov[1], atteignables)) {
             players[PlayerTurn]->move(mov[0], mov[1]);

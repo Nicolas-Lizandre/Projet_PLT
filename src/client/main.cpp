@@ -20,9 +20,9 @@ using namespace client;
 
 int main()
 {
-    //Morceau de code Lizandre
-    GameWithRender game;
-    game.run();
+    // //Morceau de code Lizandre
+    // GameWithRender game;
+    // game.run();
 
     //Morceau de code de Fayçal
     client::Game game1= client::Game();

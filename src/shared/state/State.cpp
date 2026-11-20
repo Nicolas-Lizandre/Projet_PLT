@@ -4,9 +4,10 @@
 #include "State.h"
 #include <iostream>
 #include "Player.h"
+#include "easyAI.h"
 state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
     players[0] = std::make_unique<Player>(0,0);
-    players[1] = std::make_unique<Player>(6,6);
+    players[1] = std::make_unique<easyAI>(6,6);
 
 }
 
