@@ -96,8 +96,7 @@ void state::Board::turnMasterPlate(){
 void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
     const std::vector<std::array<int, 2>>& playerPositions,
-    Treasure expected)
-{
+    Treasure expected) {
     const char* reset = "\033[0m";
     const char* reachableColor = "\033[1;33m";
     const char* treasureColor = "\033[1;30;105m";
@@ -132,7 +131,7 @@ void state::Board::display(
                     color = playerColors[k];
                     break;
                 }
-            }
+                 }
 
             std::cout << color;
             if (plate) {
@@ -152,6 +151,7 @@ void state::Board::display(
     }
 
     std::cout << reachableColor << " Case atteignable " << reset << '\n';
+}
 
 /*void state::Board::createPlayground() {
     for (auto& row : playground) {
@@ -183,8 +183,7 @@ void state::Board::display(
     }
 }*/
 
-std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
-{
+std::vector<std::array<int, 2>> state::Board::searchPath(int i, int j){
     std::vector<std::array<int, 2>> reachable;
 
     if (i < 0 || i >= 7 || j < 0 || j >= 7) return reachable;
@@ -234,9 +233,7 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
     return reachable;
 }
 
-bool state::Board::hasTreasureAt(
-    int i, int j, Treasure expected) const
-{
+bool state::Board::hasTreasureAt(int i, int j, Treasure expected) const{
     if (i < 0 || i >= 7 || j < 0 || j >= 7 || !playground[i][j]) {
         return false;
     }
@@ -468,12 +465,10 @@ void state::Board::shuffle() {
         generator
     );
 
-    for (int id = 1; id <= static_cast<int>(Treasure::GEM); ++id) {
+    for (int id = 1; id <= static_cast<int>(Treasure::UNICORN); ++id) { //UNICORN est le dernier trésor par ordre alphabétique
         const auto& position = treasurePositions[id - 1];
 
-        playground.at(position[0]).at(position[1])->setTreasure(
-            static_cast<Treasure>(id)
-        );
+        playground.at(position[0]).at(position[1])->setTreasure(static_cast<Treasure>(id));
     }
 
 }

@@ -194,8 +194,10 @@ void GameScreen::drawablesUpdate() {
             //std::cout << board.getPlayground()[i].size() << std::endl;
             //createAdequateSprite ("I" by default)
             auto& plate = gamecore.getBoard().getPlayground()[i][j];
+
+            //Partie 1 : Sprite de la pièce//
             if (plate){
-                cd.respective_texture =std::make_unique<sf::Texture>(selectCorrespondingPlate(*plate));
+                cd.respective_texture =std::make_unique<sf::Texture>(plate->getPlateAssetFromAcesses());
             }
             else{ //La Plate n'existe pas (jamais censé arriver)
                 cd.respective_texture =std::make_unique<sf::Texture>("../assets/labyrinth_pieces/|.png");
@@ -206,17 +208,41 @@ void GameScreen::drawablesUpdate() {
             cd.sprite->setScale(sf::Vector2f(1.f, 1.f));
             cd.is_background = false;
             list_complete_sprites.push_back(std::move(cd));
-            GameScreen::convert_PlaygroundPosition_To_SpritePosition(i,j);
+            //GameScreen::convert_PlaygroundPosition_To_SpritePosition(i,j);
+
+            //Partie 2 : Le Trésor//
+            if(!plate->hasTreasure(state::Treasure::NONE)) {
+                cd.respective_texture = std::make_unique<sf::Texture>(plate->getPlateTreasureAsset());
+                cd.sprite = std::make_unique<sf::Sprite>(sf::Sprite(*cd.respective_texture));
+                cd.sprite->setPosition(sf::Vector2f(
+                    GameScreen::convert_PlaygroundPosition_To_SpritePosition(i, j).x+7.f,
+                    GameScreen::convert_PlaygroundPosition_To_SpritePosition(i, j).y+7.f)); //ajout offset
+                cd.sprite->setScale(sf::Vector2f(1.f, 1.f));       
+                cd.is_background = false;
+                list_complete_sprites.push_back(std::move(cd));
+                //GameScreen::convert_PlaygroundPosition_To_SpritePosition(i,j);
+            }
+
         }
     }
 
     //MasterPlate
-    cd.respective_texture =std::make_unique<sf::Texture>(selectCorrespondingPlate(gamecore.getBoard().getMasterplate()));
+    auto masterplate = gamecore.getBoard().getMasterplate();
+    cd.respective_texture =std::make_unique<sf::Texture>(masterplate.getPlateAssetFromAcesses());
     cd.sprite = std::make_unique<sf::Sprite>(sf::Sprite(*cd.respective_texture)); //0, 0, 800, 600
     cd.sprite->setPosition(sf::Vector2f(575.f, 150.f)); //Pareil que masterplate_graybox (un code plus propre l'aurait cherché puis appliqué)
     cd.sprite->setScale(sf::Vector2f(4.f, 4.f));
     cd.is_background = false;
     list_complete_sprites.push_back(std::move(cd));
+    if(!masterplate.hasTreasure(state::Treasure::NONE)) {
+        cd.respective_texture = std::make_unique<sf::Texture>(masterplate.getPlateTreasureAsset());
+        cd.sprite = std::make_unique<sf::Sprite>(sf::Sprite(*cd.respective_texture));
+        cd.sprite->setPosition(sf::Vector2f(575.f+7.f, 150.f+7.f)); //ajout offset
+        cd.sprite->setScale(sf::Vector2f(4.f, 4.f));
+        cd.is_background = false;
+        list_complete_sprites.push_back(std::move(cd));
+        //GameScreen::convert_PlaygroundPosition_To_SpritePosition(i,j);
+    }
 
     //Joueurs respectifs [leurs pions (offset exprès) et leurs noms] - CETTE FONCTION SERA À MODIFIER !!!!
     /*
@@ -272,12 +298,6 @@ sf::Vector2i GameScreen::convert_SpritePosition_To_PlaygroundPosition(sf::Vector
     return sf::Vector2i(0, 0); //PAS FAIT !!
 }
 
-
-std::string GameScreen::selectCorrespondingPlate(state::Plate plate) { //Rotation TRIGO
-    std::string plate_path = "../assets/labyrinth_pieces/";
-    plate_path = plate_path +  plate.getPlateSymbolFromAcesses()+".png";
-    return plate_path;
-}
 
 
 sf::Vector2i GameScreen::getInsertCoordinatesFromGrayBoxBonds(completeSprite & graybox) {
