@@ -12,7 +12,7 @@ bool render_running = false;
 GameWithRender::GameWithRender() :
 gamecore(state::State(mutex)), list_commands(render::ListCommands(mutex)), render(render::Render(gamecore,list_commands)) {
     gamecore.getBoard().shuffle();
-    gamecore.getPlayers()[1].move(6,6); //Une fonction ici doit gérer la position et couleur des joueurs
+    gamecore.getPlayers()[1]->move(6,6); //Une fonction ici doit gérer la position et couleur des joueurs
 
 }
 

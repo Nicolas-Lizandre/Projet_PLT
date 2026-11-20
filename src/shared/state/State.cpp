@@ -3,8 +3,10 @@
 //
 #include "State.h"
 #include <iostream>
-
+#include "Player.h"
 state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
+    players[0] = std::make_unique<Player>(0,0);
+    players[1] = std::make_unique<Player>(6,6);
 
 }
 
@@ -12,7 +14,7 @@ state::Board& state::State::getBoard(){
     return board;
 }
 
-std::array<state::Player, 2>& state::State::getPlayers()  {
+std::array<std::unique_ptr<state::Entity>, 2>& state::State::getPlayers()  {
     return players;
 }
 
@@ -37,12 +39,12 @@ bool state::State::applyInsertion(int i, int j) {
 
 void state::State::movePlayers(int i, int j) {
     for (auto &player : players) {
-        std::array<int, 2> p = player.getPosition();
+        std::array<int, 2> p = player->getPosition();
 
         if (i == 0 || i == 6) {
             // Shift players on column j
             if (p[1] == j) {
-                player.move(
+                player->move(
                     (p[0] + (i == 0 ? 1 : 6)) % 7,
                     j
                 );
@@ -50,7 +52,7 @@ void state::State::movePlayers(int i, int j) {
         } else {
             // Shift players on row i
             if (p[0] == i) {
-                player.move(
+                player->move(
                     i,
                     (p[1] + (j == 0 ? 1 : 6)) % 7
                 );
@@ -65,7 +67,7 @@ bool state::State::obtainTreasure(int playerIndex) {
         return false;
     }
 
-    Player &player = players[playerIndex];
+    Entity &player = *players[playerIndex];
     std::array<int, 2> position = player.getPosition();
 
     if (!board.hasTreasureAt(position[0], position[1],

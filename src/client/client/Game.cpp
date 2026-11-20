@@ -10,6 +10,9 @@
 #include <algorithm>
 #include <random>
 #include <SFML/Window/Touch.hpp>
+#include "state/Player.h"
+#include "state/easyAI.h"
+
 
 using namespace std;
 using namespace state;
@@ -21,10 +24,7 @@ void client::Game::run() {
     int PlayerTurn = 0;
     Board &board = state.getBoard();
     board.shuffle();
-
-    std::array<Player, 2> &players = state.getPlayers();
-    players[1].move(6, 6);
-
+    std::array<std::unique_ptr<Entity>, 2> &players = state.getPlayers();
     string s;
     std::array<int, 2> mov;
 
@@ -40,12 +40,12 @@ void client::Game::run() {
     for (int p = 0; p < static_cast<int>(players.size()); ++p) {
         array<Treasure, 12> objectives{};
         copy_n(treasures.begin() + p * 12, 12, objectives.begin());
-        players[p].setTreasureList(objectives);
+        players[p]->setTreasureList(objectives);
     }
 
     const array<array<int, 2>, 2> startingPositions = {
-        players[0].getPosition(),
-        players[1].getPosition()
+        players[0]->getPosition(),
+        players[1]->getPosition()
     };
 
     array<int, 2> obtainedTreasures{};
@@ -67,7 +67,7 @@ void client::Game::run() {
         vector<array<int, 2>> positions;
 
         for (auto &player : players) {
-            positions.push_back(player.getPosition());
+            positions.push_back(player->getPosition());
         }
 
         return positions;
@@ -77,7 +77,7 @@ void client::Game::run() {
         cout << "Player" << PlayerTurn << "'s turn" << endl;
 
         Treasure currentTreasure =
-            players[PlayerTurn].getCurrentTreasure();
+            players[PlayerTurn]->getCurrentTreasure();
 
         board.display({}, getPositions(), currentTreasure);
 
@@ -130,7 +130,7 @@ void client::Game::run() {
 
         // Read the position after the insertion
         std::array<int, 2> position =
-            players[PlayerTurn].getPosition();
+            players[PlayerTurn]->getPosition();
 
         vector<array<int, 2>> atteignables =
             board.searchPath(position[0], position[1]);
@@ -158,7 +158,7 @@ void client::Game::run() {
         mov[1] = s[1] - '0';
 
         if (state.verifyMovementValidity(mov[0], mov[1], atteignables)) {
-            players[PlayerTurn].move(mov[0], mov[1]);
+            players[PlayerTurn]->move(mov[0], mov[1]);
 
             // Validate the active player's objective
             if (state.obtainTreasure(PlayerTurn)) {
@@ -170,8 +170,8 @@ void client::Game::run() {
                      << " !\033[0m" << endl;
             }
 
-            if (players[PlayerTurn].getCurrentTreasure() == Treasure::NONE &&
-                players[PlayerTurn].getPosition() ==
+            if (players[PlayerTurn]->getCurrentTreasure() == Treasure::NONE &&
+                players[PlayerTurn]->getPosition() ==
                     startingPositions[PlayerTurn]) {
                 board.display({}, getPositions(), Treasure::NONE);
 
