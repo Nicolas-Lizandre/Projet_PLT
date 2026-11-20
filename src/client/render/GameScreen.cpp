@@ -173,7 +173,6 @@ const std::vector<completeText> & GameScreen::getTexts () const {
 }
 
 void GameScreen::drawablesUpdate() {
-    //
     completeSprite cd;
     cd.is_background = false;
     completeText cdt;
