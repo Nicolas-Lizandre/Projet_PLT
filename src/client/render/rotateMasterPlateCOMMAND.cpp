@@ -3,14 +3,15 @@
 //
 
 #include <state/Board.h>
+#include <state/State.h>
 
 #include "rotateMasterplateCOMMAND.h"
 
 using namespace render;
 
-rotateMasterplateCOMMAND::rotateMasterplateCOMMAND (state::Board & board) : board(board) {
-
+rotateMasterplateCOMMAND::rotateMasterplateCOMMAND (state::State & gamecore) : gamecore(gamecore) {
 }
+
 void rotateMasterplateCOMMAND::exec () {
-    board.turnMasterPlate();//Rotation TRIGO
+    gamecore.getBoard().turnMasterPlate();//Rotation TRIGO
 }

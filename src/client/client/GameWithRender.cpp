@@ -3,7 +3,12 @@
 //
 #include "GameWithRender.h"
 
-#include <thread>
+#include <iostream>
+#include <array>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <random>
 
 using namespace client;
 
@@ -14,6 +19,22 @@ gamecore(state::State(mutex)), list_commands(render::ListCommands(mutex)), rende
     gamecore.getBoard().shuffle();
     gamecore.getPlayers()[1]->move(6,6); //Une fonction ici doit gérer la position et couleur des joueurs
 
+
+    //Répartition initiale des trésors
+    std::array<state::Player, 2> & players = gamecore.getPlayers();
+    std::array<state::Treasure, 24> treasures{};
+    for (int k = 0; k < static_cast<int>(treasures.size()); ++k) {
+        treasures[k] = static_cast<state::Treasure>(k + 1);
+    }
+
+    std::mt19937 generator(std::random_device{}());
+    shuffle(treasures.begin(), treasures.end(), generator);
+
+    for (int p = 0; p < static_cast<int>(players.size()); ++p) {
+        std::array<state::Treasure, 12> objectives{};
+        std::copy_n(treasures.begin() + p * 12, 12, objectives.begin());
+        players[p].setTreasureList(objectives);
+    }
 }
 
 GameWithRender::~GameWithRender() = default;

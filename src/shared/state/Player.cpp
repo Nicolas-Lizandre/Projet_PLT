@@ -3,7 +3,11 @@
 //
 #include "Player.h"
 #include "Board.h"
+#include "State.h"
+
 #include <iostream>
+#include <ostream>
+
 using namespace std;
 
 state::Player::Player(int i, int j): Entity(i,j) {
@@ -11,6 +15,12 @@ state::Player::Player(int i, int j): Entity(i,j) {
     position[1]=j;
     starting_position[0]=i;
     starting_position[1]=j;
+    }
+
+
+void state::Player::move(int i, int j) {
+    position[0]=i;
+    position[1]=j;
 }
 
 std::array<int, 2> state::Player::chooseInsert(Board &board) {
@@ -59,4 +69,16 @@ std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> 
     mov[0] = s[0] - '0';
     mov[1] = s[1] - '0';
     return mov;
+}
+
+int state::Player::getTreasureIndex () {
+    return treasure_index;
+}
+
+
+void state::Player::setTreasureList(
+    const std::array<state::Treasure, 12>& treasures)
+{
+    treasure_list = treasures;
+    treasure_index = 0;
 }
