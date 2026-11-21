@@ -119,10 +119,10 @@ void state::State::advanceTurn () {
     }
 
 }
-
+/*
 void state::State::initPlayingPiece (){
     playing_piece = GREEN_PIECE;
 }
 void state::State::initPlayingPhase () {
     playing_phase = INSERT_PIECE;
-}
+}*/

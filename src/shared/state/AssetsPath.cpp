@@ -80,10 +80,10 @@ std::string AssetsPath::getPieceAssetPath(Piece piece)
 {
     switch (piece)
     {
-        case state::Piece::RED_PIECE:
+        case state::Piece::GREEN_PIECE:
             return "../assets/Player0_GREEN_PIECE.png";
 
-        case state::Piece::GREEN_PIECE:
+        case state::Piece::RED_PIECE:
             return "../assets/Player1_RED_PIECE.png";
 
     }
