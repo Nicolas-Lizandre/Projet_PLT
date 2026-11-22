@@ -13,15 +13,15 @@ using namespace render;
 
 
 GameModeScreen::GameModeScreen (sf::RenderWindow & window) : ScreenState(window) {
-    std::cout << "Created GameModeScreen" << std::endl;
+    completeText cdt;
 
-    // Start Button Sprite
-    addCompleteSprite("../assets/StartButtonSprite.png",
-    {240, 400},{2.1f, 1.0f},true);
 
-    //Texts
-    addCompleteText(sf::Text(ArialFont::font, std::string("Commencer"), 50),
-        sf::Color::White, {260.f, 400.f}, true);
+    sf::Text button_commencer_text = sf::Text(ArialFont::font, std::string("Commencer"), 50);
+    button_commencer_text.setFillColor(sf::Color::White);
+    button_commencer_text.setPosition({260.f, 400.f});
+    cdt.text = std::make_unique<sf::Text>(button_commencer_text);
+    list_complete_texts.push_back(std::move(cdt));
+
 }
 void GameModeScreen::handleEvents (sf::Event & event) {
     if (const auto* mousePressed = event.getIf<sf::Event::MouseButtonPressed>()) {
@@ -55,4 +55,6 @@ ScreenStateQUERIED GameModeScreen::getDemandScreenChange () {
     return demand_screen_change;
 }
 
-void GameModeScreen::drawablesUpdate() {}
+void GameModeScreen::drawablesUpdate() {
+
+}

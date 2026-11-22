@@ -80,7 +80,7 @@ void state::Plate::showPlate()
     std::cout << symbol;
 }
 
-/*
+
 std::string state::Plate::getPlateAssetFromAcesses () const {
     std::string asset_path;
 
@@ -117,7 +117,7 @@ std::string state::Plate::getPlateAssetFromAcesses () const {
 
     return asset_path;
 }
-*/
+
 state::Treasure state::Plate::getTreasure() const {
     return treasure;
 }
