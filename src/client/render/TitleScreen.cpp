@@ -10,74 +10,32 @@ using namespace render;
 
 TitleScreen::TitleScreen(sf::RenderWindow & window) : ScreenState(window) {
     std::cout << "Created TitleScreen" << std::endl;
-    //Remarque : Par soucis de consision on pourrait juste mettre sur le même sprite (pas fait ici)
-
-    //Mise en place des textures - Ordre à respecter
-    // Gradient Jaune <-> Orange du background
-
-    completeSprite cd;
-    //sf::Sprite sprite;
-
-    cd.respective_texture = std::make_unique<sf::Texture>("../assets/Background_LABYRINTHE.png");
-    cd.sprite = std::make_unique<sf::Sprite>(sf::Sprite(*cd.respective_texture)); //0, 0, 800, 600
-    cd.sprite->setPosition(sf::Vector2f(0, 0));
-    cd.sprite->setScale(sf::Vector2f(1.f, 1.f));
-    list_complete_sprites.push_back(std::move(cd));
-
-    // Easter Egg Pokemon
-    /*
-    cd.respective_texture = std::make_unique<sf::Texture>(
-        ScreenState::createTextureObject("C:/Users/nicol/Downloads/image_pokedex-20260911/pokemon/9.png"));
-    cd.sprite = std::make_unique<sf::Sprite>(*cd.respective_texture, sf::IntRect()); //0, 0, 800, 600
-    cd.sprite->setPosition(sf::Vector2f(0, 256));
-    cd.sprite->setScale(sf::Vector2f(1.f, 1.f));
-    list_complete_sprites.push_back(std::move(cd));
-    */
+    /*All the Sprite are for the background so no need to erase them in drawablesUpdate
+    *The following assets could be regrouped into 1*/
 
 
+    //Background (red-yellow gradient)
+    addCompleteSprite("../assets/Background_LABYRINTHE.png",
+        {0, 0},{1.f, 1.f},true);
 
-    // Logo Labyrinthe
-    cd.respective_texture = std::make_unique<sf::Texture>("../assets/Logo_LABYRINTHE.png");
-    cd.sprite = std::make_unique<sf::Sprite>(*cd.respective_texture); //0, 0, 1200, 600
-    cd.sprite->setPosition(sf::Vector2f(-80, 0));
-    cd.sprite->setScale(sf::Vector2f(0.8f, 0.8f));
-    list_complete_sprites.push_back(std::move(cd));
+    // Labyrinth Logo
+    addCompleteSprite("../assets/Logo_LABYRINTHE.png",
+        {-80, 0},{0.8f, 0.8f},true);
 
-    // Bouton Commencer
-    cd.respective_texture = std::make_unique<sf::Texture>("../assets/Bouton_Commencer_Labyrinthe.png");
-    cd.sprite = std::make_unique<sf::Sprite>(*cd.respective_texture); //0, 0, 150, 66
-    cd.sprite->setPosition(sf::Vector2f(240, 400));
-    cd.sprite->setScale(sf::Vector2f(2.1f, 1.0f));
-    list_complete_sprites.push_back(std::move(cd));
+    // Start Button Sprite
+    addCompleteSprite("../assets/StartButtonSprite.png",
+    {240, 400},{2.1f, 1.0f},true);
 
 
-
-    completeText cdt;
-
-
-    sf::Text button_commencer_text = sf::Text(ArialFont::font, std::string("Commencer"), 50);
-    button_commencer_text.setFillColor(sf::Color::White);
-    button_commencer_text.setPosition({260.f, 400.f});
-    cdt.text = std::make_unique<sf::Text>(button_commencer_text);
-    list_complete_texts.push_back(std::move(cdt));
-
-    sf::Text versionBuild = sf::Text(ArialFont::font, std::string("v0.3"), 20);
-    versionBuild.setFillColor(sf::Color::Black);
-    versionBuild.setPosition(sf::Vector2f(20, 570));
-    cdt.text = std::make_unique<sf::Text>(versionBuild);
-    list_complete_texts.push_back(std::move(cdt));
-
-    sf::Text auteur1 = sf::Text(ArialFont::font, std::string("AUTEURS : Faycal BOUIDDOUH, Lizandre FADE,"), 20);
-    auteur1.setFillColor(sf::Color::Black);
-    auteur1.setPosition(sf::Vector2f(330, 550));
-    cdt.text = std::make_unique<sf::Text>(auteur1);
-    list_complete_texts.push_back(std::move(cdt));
-
-    sf::Text auteur2 = sf::Text(ArialFont::font, std::string("   Mohammed-amine GHERRAS, Tom PICQUART"), 20);
-    auteur2.setFillColor(sf::Color::Black);
-    auteur2.setPosition(sf::Vector2f(330, 570));
-    cdt.text = std::make_unique<sf::Text>(auteur2);
-    list_complete_texts.push_back(std::move(cdt));
+    //Texts
+    addCompleteText(sf::Text(ArialFont::font, std::string("Commencer"), 50),
+        sf::Color::White, {260.f, 400.f}, true);
+    addCompleteText(sf::Text(ArialFont::font, std::string("v0.3"), 20),
+        sf::Color::Black, {20, 570}, true);
+    addCompleteText(sf::Text(ArialFont::font, std::string("AUTEURS : Faycal BOUIDDOUH, Lizandre FADE,"), 20),
+        sf::Color::Black, {330, 550}, true);
+    addCompleteText(sf::Text(ArialFont::font, std::string("   Mohammed-amine GHERRAS, Tom PICQUART"), 20),
+        sf::Color::Black, {330, 570}, true);
 }
 
 
@@ -119,9 +77,8 @@ ScreenStateQUERIED TitleScreen::getDemandScreenChange () {
     return demand_screen_change;
 }
 
-void TitleScreen::drawablesUpdate() {
-    //Inutile ici
-}
+void TitleScreen::drawablesUpdate() {}
+
 
 ///0.1 Window fonctionnel
 ///0.2 Début de jeu intéractif

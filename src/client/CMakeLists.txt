@@ -24,7 +24,8 @@ add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources}
         render/rotateMasterPlateCOMMAND.cpp
         render/Command.cpp
         client/GameWithRender.cpp
-        render/moveCOMMAND.cpp)
+        render/moveCOMMAND.cpp
+        render/VictoryScreen.cpp)
 add_dependencies(${lib_client_target} generate-headers)
 target_include_directories(${lib_client_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
