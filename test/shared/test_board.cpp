@@ -1,5 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/state/Board.h"
+#include <memory>
+#include "../../src/shared/state/L.h"
 
 using namespace state;
 
@@ -98,5 +100,23 @@ BOOST_AUTO_TEST_CASE(Test_Board_Insert_From_Right)
     BOOST_CHECK(board.hasTreasureAt(3, 5, Treasure::DRAGON));
     BOOST_CHECK(!board.hasTreasureAt(3, 6, Treasure::DRAGON));
     BOOST_CHECK(board.getMasterplate().hasTreasure(Treasure::GHOST));
+}
+
+BOOST_AUTO_TEST_CASE(Test_Board_Turn_MasterPlate)
+{
+    Board board;
+    auto& plateau = board.getPlayground();
+
+    // L'insertion par le haut éjecte la tuile L placée en bas.
+    plateau[6][1] = std::make_unique<L>();
+    BOOST_REQUIRE(board.insertPlate(0, 1));
+
+    board.turnMasterPlate();
+    const Plate tuileLibre = board.getMasterplate();
+
+    BOOST_CHECK(!tuileLibre.getNorth());
+    BOOST_CHECK(tuileLibre.getEast());
+    BOOST_CHECK(tuileLibre.getSouth());
+    BOOST_CHECK(!tuileLibre.getWest());
 }
 
