@@ -90,52 +90,8 @@ void state::Board::turnMasterPlate(){
 }
 
 
-/*void state::Board::display(
-    const std::vector<std::array<int, 2>>& reachable,
-    const std::vector<std::array<int, 2>>& playerPositions)
-{
-    const char* const RESET = "\033[0m";
-    const char* const YELLOW = "\033[1;33m";
 
-    const char* const PLAYER_COLORS[2] = {
-        "\033[1;37;42m", // White text, green background
-        "\033[1;37;41m"  // White text, red background
-    };
 
-    for (int i = 0; i < 7; ++i) {
-        for (int j = 0; j < 7; ++j) {
-            const char* couleur = RESET;
-
-            // Highlight reachable cells
-            for (const auto& c : reachable) {
-                if (c[0] == i && c[1] == j) {
-                    couleur = YELLOW;
-                    break;
-                }
-            }
-
-            // Player colors take priority
-            for (std::size_t k = 0; k < playerPositions.size(); ++k) {
-                if (playerPositions[k][0] == i &&
-                    playerPositions[k][1] == j) {
-                    couleur = PLAYER_COLORS[k % 2];
-                }
-            }
-
-            std::cout << couleur;
-
-            if (playground[i][j]) {
-                playground[i][j]->showPlate();
-            } else {
-                std::cout << '?';
-            }
-
-            std::cout << RESET;
-        }
-
-        std::cout << '\n';
-    }
-}*/
 
 void Board::displayMasterplate() {
     masterplate->display();
@@ -143,15 +99,13 @@ void Board::displayMasterplate() {
 
 void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
-    const std::vector<std::array<int, 2>>& playerPositions,
-    Treasure expected)
-{
-    const char* reset = "\033[0m";
-    const char* reachableColor = "\033[1;33m";
-    const char* treasureColor = "\033[1;30;105m";
-    const std::array<const char*, 4> playerColors = {
-        "\033[1;37;42m", "\033[1;37;41m",
-        "\033[1;37;44m", "\033[1;37;46m"
+    const std::vector<std::array<int, 2>>& playerPositions, Treasure expected) {
+        const char* reset = "\033[0m";
+        const char* reachableColor = "\033[1;33m";
+        const char* treasureColor = "\033[1;30;105m";
+        const std::array<const char*, 4> playerColors = {
+            "\033[1;37;42m", "\033[1;37;41m",
+            "\033[1;37;44m", "\033[1;37;46m"
     };
 
     std::cout << "\n     ";
@@ -180,7 +134,7 @@ void state::Board::display(
                     color = playerColors[k];
                     break;
                 }
-            }
+                 }
 
             std::cout << color;
             if (plate) {
@@ -232,8 +186,7 @@ void state::Board::display(
     }
 }*/
 
-std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
-{
+std::vector<std::array<int, 2>> state::Board::searchPath(int i, int j){
     std::vector<std::array<int, 2>> reachable;
 
     if (i < 0 || i >= 7 || j < 0 || j >= 7) return reachable;
@@ -283,9 +236,7 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
     return reachable;
 }
 
-bool state::Board::hasTreasureAt(
-    int i, int j, Treasure expected) const
-{
+bool state::Board::hasTreasureAt(int i, int j, Treasure expected) const{
     if (i < 0 || i >= 7 || j < 0 || j >= 7 || !playground[i][j]) {
         return false;
     }
@@ -524,6 +475,8 @@ void state::Board::shuffle() {
             static_cast<Treasure>(id)
         );
     }
+
+
 
 }
 
