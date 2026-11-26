@@ -69,15 +69,3 @@ std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> 
 std::unique_ptr<state::Entity> state::Player::clone() {
     return std::make_unique<Player>(*this);
 }
-
-int state::Player::getTreasureIndex () {
-    return treasure_index;
-}
-
-
-void state::Player::setTreasureList(
-    const std::array<state::Treasure, 12>& treasures)
-{
-    treasure_list = treasures;
-    treasure_index = 0;
-}

@@ -42,7 +42,7 @@ void state::Plate::setTreasure(Treasure value) {
 }
 
 
-void state::Plate::showPlate()
+void state::Plate::display()
 {
     const char* symbol = " ";
 

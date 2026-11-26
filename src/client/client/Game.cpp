@@ -52,11 +52,11 @@ void client::Game::run() {
 
     auto treasureName = [](Treasure treasure) {
         const array<const char*, 25> names = {
-            "Aucun", "Dragon", "Fantome", "Genie", "Sorciere",
-            "Princesse", "Chauve-souris", "Chouette", "Rat",
-            "Araignee", "Scarabee", "Lezard", "Papillon", "Livre",
-            "Bourse", "Coffre", "Couronne", "Cle", "Anneau",
-            "Chandelier", "Carte", "Epee", "Casque", "Crane", "Gemme"
+            "NONE", "BAT", "BEETLE", "BOOK", "CANDLEHOLDER",
+            "CAT", "CROWN", "CUP", "DAGGER",
+            "DRAGON", "ENSEA", "GEM", "GENIE", "GHOST",
+            "GNOME", "HELMET", "KEY", "LIZARD", "OWL",
+            "POTION", "PURSE", "RAT", "RING", "SPIDER", "UNICORN"
         };
 
         return names[static_cast<int>(treasure)];

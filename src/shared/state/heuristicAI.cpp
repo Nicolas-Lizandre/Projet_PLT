@@ -29,14 +29,13 @@ std::array<int, 2> state::heuristicAI::chooseInsert(State &state) {
     for ( array<int, 2> potentialinsert : legal_inserts) {
         for (int i=0; i<4; i++) {
             State tempstate = state;
-
             for (int j = 0; j < i; j++) {
                 tempstate.getBoard().turnMasterPlate();
             }
-
             tempstate.applyInsertion(potentialinsert[0],potentialinsert[1]);
             Board &tempboard = tempstate.getBoard();
             array<int, 2> target= tempboard.findTreasure(treasure_list[treasure_index]);
+            printf("%d",target);
             if (target[0] == -1 && target[1] == -1) {
                 continue;
             }

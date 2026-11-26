@@ -468,16 +468,12 @@ void state::Board::shuffle() {
         generator
     );
 
-    for (int id = 1; id <= static_cast<int>(GEM); ++id) {
+    for (int id = 1; id <= static_cast<int>(UNICORN); ++id) {
         const auto& position = treasurePositions[id - 1];
-
         playground.at(position[0]).at(position[1])->setTreasure(
             static_cast<Treasure>(id)
         );
     }
-
-
-
 }
 
 
@@ -500,7 +496,6 @@ std::array<int, 2> Board::findTreasure(Treasure treasure) {
             }
         }
     }
-
 }
 
 Board::Board(Board& other) {
