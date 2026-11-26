@@ -85,7 +85,7 @@ bool state::Board::insertPlate(int i, int j) {
 }
 
 
-void state::Board::turnMasterPlate(){
+void state::Board::turnMasterplate(){
     masterplate->turnPlate();
 }
 

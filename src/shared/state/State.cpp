@@ -16,7 +16,7 @@ state::Board& state::State::getBoard(){
     return board;
 }
 
-std::array<std::unique_ptr<state::Entity>, 2>& state::State::getPlayers()  {
+std::array<std::shared_ptr<state::Entity>, 2>& state::State::getPlayers()  {
     return players;
 }
 
@@ -103,21 +103,13 @@ state::TurnPhase state::State::getPlayingPhase () {
     return playing_phase;
 }
 
-int state::State::getPlayingPiecePlayerID () {
-    switch (playing_piece) {
-        case(GREEN_PIECE) : return 0;
-        case(RED_PIECE) : return 1;
-    }
-    return 0;
+
+
+int state::State::getPlayingPlayerID() {
+    return playing_player_ID;
 }
 
-state::Piece state::State::getPlayingPiece () {
-    return playing_piece;
-}
 void state::State::advanceTurn () {
-    std::cout << "hello" << std::endl;
-    std::cout << playing_piece << std::endl;
-    std::cout << playing_phase << std::endl;
 
     if (playing_phase == INSERT_PIECE) {
         playing_phase = MOVE;
@@ -125,9 +117,9 @@ void state::State::advanceTurn () {
     }
 
     if (playing_phase == MOVE) {
-        switch (playing_piece) {
-            case(GREEN_PIECE) : playing_piece = RED_PIECE; break;
-            case(RED_PIECE) : playing_piece = GREEN_PIECE; break;
+        switch (playing_player_ID) {
+            case(0) : playing_player_ID = 1; break;
+            case(1) : playing_player_ID = 0; break;
         }
         playing_phase = INSERT_PIECE;
         return;

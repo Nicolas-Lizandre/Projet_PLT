@@ -45,8 +45,8 @@ void render::Render::run() {
 
         manageDraw();
         seekDemandNewScreen();
-        //Comment s'occuper des commandes à exec en permanence ?????
-        list_commands.exeAll(); //WIP ce bout de code est à dégager dans Game
+
+        list_commands.exeAll(); //WIP
     }
 }
 

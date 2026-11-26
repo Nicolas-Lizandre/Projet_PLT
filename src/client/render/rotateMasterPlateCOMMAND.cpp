@@ -13,5 +13,5 @@ rotateMasterplateCOMMAND::rotateMasterplateCOMMAND (state::State & gamecore) : g
 }
 
 void rotateMasterplateCOMMAND::exec () {
-    gamecore.getBoard().turnMasterPlate();//Rotation TRIGO
+    gamecore.getBoard().turnMasterplate();//Rotation TRIGO
 }

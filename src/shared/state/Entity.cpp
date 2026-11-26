@@ -3,6 +3,7 @@
 //
 #include "Entity.h"
 
+#include "Player.h"
 #include "State.h"
 
 void state::Entity::move(int i, int j) {
@@ -22,8 +23,11 @@ state::Treasure state::Entity::getCurrentTreasure() const {
     return treasure_list[treasure_index];
 }
 
-void state::Entity::setTreasureList(
-    const std::array<state::Treasure, 12>& treasures)
+int state::Entity::getTreasureIndex () {
+    return treasure_index;
+}
+
+void state::Entity::setTreasureList(const std::array<state::Treasure, 12>& treasures)
 {
     treasure_list = treasures;
     treasure_index = 0;
@@ -40,4 +44,15 @@ state::Entity::Entity(int i, int j) {
     position[1]=j;
     starting_position[0]=i;
     starting_position[1]=j;
+}
+
+//To Modify - WIP
+std::array<int,2> state::Entity::chooseMovement (std::vector<std::array<int,2>> reachable, state::State & state) {
+    return {0,0};
+}
+std::array<int,2> state::Entity::chooseInsert (state::State & state) {
+    return {0,0};
+}
+std::unique_ptr<state::Entity> state::Entity::clone () {
+    return std::make_unique<state::Player>(0,0);
 }

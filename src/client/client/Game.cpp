@@ -24,7 +24,7 @@ void client::Game::run() {
     int PlayerTurn = 0;
     Board &board = state.getBoard();
     board.shuffle();
-    std::array<std::unique_ptr<Entity>, 2> &players = state.getPlayers();
+    std::array<std::shared_ptr<Entity>, 2> players = state.getPlayers();
     string s;
     std::array<int, 2> mov;
 

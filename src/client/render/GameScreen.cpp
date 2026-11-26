@@ -198,20 +198,20 @@ void GameScreen::drawablesUpdate() {
      * That's why gamecore.getPlayingPiecePlayerID() == i enables us to identify which player it's the turn !!!
      * And that's why static_cast<state::Piece>(i) get us the good Piece !
      */
-    std::array<std::unique_ptr<state::Entity>, 2> &players = gamecore.getPlayers(); //To make the code simpler
+    std::array<std::shared_ptr<state::Entity>, 2> &players = gamecore.getPlayers(); //To make the code simpler
     for(int i = 0; i < players.size(); i++) {
         //Piece Sprite
-        addCompleteSprite(state::AssetsPath::getPieceAssetPath(static_cast<state::Piece>(i)),
+        addCompleteSprite(state::AssetsPath::getPieceAssetPath(i),
         sf::Vector2f(convert_PlaygroundPosition_To_SpritePosition(players[i]->getPosition()[0], players[i]->getPosition()[1])),
         {1,1},false);
 
         //To indicate which is the current player
-        if(gamecore.getPlayingPiecePlayerID() == i) {
+        if(gamecore.getPlayingPlayerID() == i) {
             //Current player text WITH corresponding piece coloration
-            switch (gamecore.getPlayingPiece()) {
-                case(state::Piece::GREEN_PIECE) : addCompleteText(sf::Text(ArialFont::font, std::string("Player" + std::to_string(i)), 30),
+            switch (gamecore.getPlayingPlayerID()) {
+                case(0) : addCompleteText(sf::Text(ArialFont::font, std::string("Player" + std::to_string(i)), 30),
                     sf::Color::Green,{575.f, 80.f},false); break;
-                case(state::Piece::RED_PIECE) : addCompleteText(sf::Text(ArialFont::font, std::string("Player" + std::to_string(i)), 30),
+                case(1) : addCompleteText(sf::Text(ArialFont::font, std::string("Player" + std::to_string(i)), 30),
                     sf::Color(255, 0, 255, 255),{575.f, 80.f},false); break; //Violet because Red on Red is not Visible
                 //case default : turn_text.setFillColor(sf::Color::White); break;
             }

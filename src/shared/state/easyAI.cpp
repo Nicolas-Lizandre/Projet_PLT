@@ -28,7 +28,7 @@ std::array<int, 2> state::easyAI::chooseInsert(State &state) {
     std::uniform_int_distribution<int> rotationDistribution(0, 3); // uniform distribution for rotation
     rotation = rotationDistribution(generator);
     for (int i = 0; i < rotation; i++) {
-        board.turnMasterPlate();
+        board.turnMasterplate();
     }
     std::uniform_int_distribution<int> distribution(0,11);
     insertnumber = distribution(generator);

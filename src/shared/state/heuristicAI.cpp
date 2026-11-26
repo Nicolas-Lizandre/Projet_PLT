@@ -30,7 +30,7 @@ std::array<int, 2> state::heuristicAI::chooseInsert(State &state) {
         for (int i=0; i<4; i++) {
             State tempstate = state;
             for (int j = 0; j < i; j++) {
-                tempstate.getBoard().turnMasterPlate();
+                tempstate.getBoard().turnMasterplate();
             }
             tempstate.applyInsertion(potentialinsert[0],potentialinsert[1]);
             Board &tempboard = tempstate.getBoard();
@@ -59,7 +59,7 @@ std::array<int, 2> state::heuristicAI::chooseInsert(State &state) {
     }
     Board &board = state.getBoard();
     for (int i=0; i<rotation; i++) {
-        board.turnMasterPlate();
+        board.turnMasterplate();
     }
     cout<< "insert choisi:"<< insert[0]<< " " <<insert[1] << endl;
     return insert;

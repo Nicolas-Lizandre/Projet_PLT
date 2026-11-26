@@ -21,7 +21,7 @@ gamecore(state::State(mutex)), list_commands(render::ListCommands(mutex)), rende
 
 
     //Répartition initiale des trésors
-    std::array<std::unique_ptr<state::Entity>, 2> & players = gamecore.getPlayers();
+    std::array<std::shared_ptr<state::Entity>, 2> & players = gamecore.getPlayers();
     std::array<state::Treasure, 24> treasures{};
     for (int k = 0; k < static_cast<int>(treasures.size()); ++k) {
         treasures[k] = static_cast<state::Treasure>(k + 1);

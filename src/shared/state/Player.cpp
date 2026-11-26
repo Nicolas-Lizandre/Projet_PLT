@@ -29,7 +29,7 @@ std::array<int, 2> state::Player::chooseInsert(State &state) {
         cin >> s;
 
         if (s == "y") {
-            board.turnMasterPlate();
+            board.turnMasterplate();
         } else if (s == "n") {
             temp = false;
         }

@@ -45,6 +45,7 @@ target_compile_options(${lib_client_target} PUBLIC
 )
 # Compile "client" executable
 add_executable(${client_target} main.cpp
+        render/moveCOMMAND.cpp
 )
 target_link_libraries(${client_target} PUBLIC 
   ${lib_client_target}
