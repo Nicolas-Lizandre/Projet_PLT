@@ -36,4 +36,22 @@ BOOST_AUTO_TEST_CASE(Test_Board_Insertion_Positions)
     BOOST_CHECK(!board.insertPlate(3, 7));   // Colonne hors de la grille
 }
 
+BOOST_AUTO_TEST_CASE(Test_Board_Insert_From_Top)
+{
+    Board board;
+    auto& plateau = board.getPlayground();
+
+    plateau[0][1]->setTreasure(Treasure::DRAGON);  // En haut de la colonne
+    plateau[1][1]->setTreasure(Treasure::NONE);    // Juste en dessous
+    plateau[6][1]->setTreasure(Treasure::GHOST);   // En bas de la colonne
+
+    BOOST_CHECK(board.insertPlate(0, 1));
+
+    BOOST_CHECK(board.hasTreasureAt(1, 1, Treasure::DRAGON));
+    BOOST_CHECK(!board.hasTreasureAt(0, 1, Treasure::DRAGON));
+    BOOST_CHECK(board.getMasterplate().hasTreasure(Treasure::GHOST));
+}
+
+
+
 
