@@ -17,13 +17,8 @@ state::Player::Player(int i, int j): Entity(i,j) {
     starting_position[1]=j;
     }
 
-
-void state::Player::move(int i, int j) {
-    position[0]=i;
-    position[1]=j;
-}
-
-std::array<int, 2> state::Player::chooseInsert(Board &board) {
+std::array<int, 2> state::Player::chooseInsert(State &state) {
+    auto &board = state.getBoard();
     bool temp = true;
     string s;
     std::array<int, 2> mov;
@@ -54,7 +49,7 @@ std::array<int, 2> state::Player::chooseInsert(Board &board) {
     return mov;
 }
 
-std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> > reachable, Board &board) {
+std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> > reachable, State &state) {
     string s;
     std::array<int, 2> mov;
 
@@ -71,14 +66,6 @@ std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> 
     return mov;
 }
 
-int state::Player::getTreasureIndex () {
-    return treasure_index;
-}
-
-
-void state::Player::setTreasureList(
-    const std::array<state::Treasure, 12>& treasures)
-{
-    treasure_list = treasures;
-    treasure_index = 0;
+std::unique_ptr<state::Entity> state::Player::clone() {
+    return std::make_unique<Player>(*this);
 }

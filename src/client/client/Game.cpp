@@ -52,11 +52,11 @@ void client::Game::run() {
 
     auto treasureName = [](Treasure treasure) {
         const array<const char*, 25> names = {
-            "Aucun", "Dragon", "Fantome", "Genie", "Sorciere",
-            "Princesse", "Chauve-souris", "Chouette", "Rat",
-            "Araignee", "Scarabee", "Lezard", "Papillon", "Livre",
-            "Bourse", "Coffre", "Couronne", "Cle", "Anneau",
-            "Chandelier", "Carte", "Epee", "Casque", "Crane", "Gemme"
+            "NONE", "BAT", "BEETLE", "BOOK", "CANDLEHOLDER",
+            "CAT", "CROWN", "CUP", "DAGGER",
+            "DRAGON", "ENSEA", "GEM", "GENIE", "GHOST",
+            "GNOME", "HELMET", "KEY", "LIZARD", "OWL",
+            "POTION", "PURSE", "RAT", "RING", "SPIDER", "UNICORN"
         };
 
         return names[static_cast<int>(treasure)];
@@ -122,7 +122,7 @@ void client::Game::run() {
         // }
         // mov[0] = s[0] - '0';
         // mov[1] = s[1] - '0';
-        mov = players[PlayerTurn]->chooseInsert(board);
+        mov = players[PlayerTurn]->chooseInsert(state);
         // Update tiles and players together
         if (!state.applyInsertion(mov[0], mov[1])) {
             cout << "Illegal insertion" << endl;
@@ -158,7 +158,7 @@ void client::Game::run() {
         // mov[0] = s[0] - '0';
         // mov[1] = s[1] - '0';
 
-        mov = players[PlayerTurn]->chooseMovement(atteignables,board);
+        mov = players[PlayerTurn]->chooseMovement(atteignables,state);
 
         if (state.verifyMovementValidity(mov[0], mov[1], atteignables)) {
             players[PlayerTurn]->move(mov[0], mov[1]);

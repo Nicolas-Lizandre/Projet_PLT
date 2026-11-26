@@ -85,8 +85,8 @@ GameScreen::GameScreen (sf::RenderWindow & window, state::State & gamecore, List
 
 void GameScreen::handleEvents (sf::Event & event) {
     //State Based events (chances are here is not the good place)
-    for (auto player : gamecore.getPlayers()) {
-        if(player.getTreasureIndex() == TREASURES_TO_FIND_AT_2_PLAYERS) {
+    for (auto &player : gamecore.getPlayers()) {
+        if(player->getTreasureIndex() == TREASURES_TO_FIND_AT_2_PLAYERS) {
             demand_screen_change = VICTORYSCREEN;
         }
     }
@@ -198,11 +198,11 @@ void GameScreen::drawablesUpdate() {
      * That's why gamecore.getPlayingPiecePlayerID() == i enables us to identify which player it's the turn !!!
      * And that's why static_cast<state::Piece>(i) get us the good Piece !
      */
-    std::array<state::Player, 2> players = gamecore.getPlayers(); //To make the code simpler
+    std::array<std::unique_ptr<state::Entity>, 2> &players = gamecore.getPlayers(); //To make the code simpler
     for(int i = 0; i < players.size(); i++) {
         //Piece Sprite
         addCompleteSprite(state::AssetsPath::getPieceAssetPath(static_cast<state::Piece>(i)),
-        sf::Vector2f(convert_PlaygroundPosition_To_SpritePosition(players[i].getPosition()[0], players[i].getPosition()[1])),
+        sf::Vector2f(convert_PlaygroundPosition_To_SpritePosition(players[i]->getPosition()[0], players[i]->getPosition()[1])),
         {1,1},false);
 
         //To indicate which is the current player
@@ -217,11 +217,11 @@ void GameScreen::drawablesUpdate() {
             }
 
             //Number of Treasures to find
-            addCompleteText(sf::Text(ArialFont::font, std::to_string(TREASURES_TO_FIND_AT_2_PLAYERS - gamecore.getPlayers()[i].getTreasureIndex()), 50),
+            addCompleteText(sf::Text(ArialFont::font, std::to_string(TREASURES_TO_FIND_AT_2_PLAYERS - gamecore.getPlayers()[i]->getTreasureIndex()), 50),
                 sf::Color::White, {700.f, 425.f}, false);
 
             //Treasure to obtain
-            addCompleteSprite(state::AssetsPath::getTreasureAssetPath(players[i].getCurrentTreasure()),
+            addCompleteSprite(state::AssetsPath::getTreasureAssetPath(players[i]->getCurrentTreasure()),
                 {590.f, 425.f},{2.f, 2.f},false);
         }
     }

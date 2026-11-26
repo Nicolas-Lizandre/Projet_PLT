@@ -33,8 +33,8 @@ VictoryScreen::VictoryScreen(sf::RenderWindow & window, state::State & gamecore)
     //Winner Displaying
     int winner_player_id=-1;
     for(int i = 0; i < gamecore.getPlayers().size(); i++) {
-        if(gamecore.getPlayers()[i].getTreasureIndex() == TREASURES_TO_FIND_AT_2_PLAYERS) {
-            std::cout << "Winner : " << gamecore.getPlayers()[i].getTreasureIndex() << std::endl;
+        if(gamecore.getPlayers()[i]->getTreasureIndex() == TREASURES_TO_FIND_AT_2_PLAYERS) {
+            std::cout << "Winner : " << gamecore.getPlayers()[i]->getTreasureIndex() << std::endl;
             winner_player_id = i;
         }
     }
