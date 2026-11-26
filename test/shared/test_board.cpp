@@ -68,4 +68,35 @@ BOOST_AUTO_TEST_CASE(Test_Board_Insert_From_Bottom)
     BOOST_CHECK(board.getMasterplate().hasTreasure(Treasure::GHOST));
 }
 
+BOOST_AUTO_TEST_CASE(Test_Board_Insert_From_Left)
+{
+    Board board;
+    auto& plateau = board.getPlayground();
+
+    plateau[3][0]->setTreasure(Treasure::DRAGON);
+    plateau[3][1]->setTreasure(Treasure::NONE);
+    plateau[3][6]->setTreasure(Treasure::GHOST);
+
+    BOOST_CHECK(board.insertPlate(3, 0));
+
+    BOOST_CHECK(board.hasTreasureAt(3, 1, Treasure::DRAGON));
+    BOOST_CHECK(!board.hasTreasureAt(3, 0, Treasure::DRAGON));
+    BOOST_CHECK(board.getMasterplate().hasTreasure(Treasure::GHOST));
+}
+
+BOOST_AUTO_TEST_CASE(Test_Board_Insert_From_Right)
+{
+    Board board;
+    auto& plateau = board.getPlayground();
+
+    plateau[3][6]->setTreasure(Treasure::DRAGON);
+    plateau[3][5]->setTreasure(Treasure::NONE);
+    plateau[3][0]->setTreasure(Treasure::GHOST);
+
+    BOOST_CHECK(board.insertPlate(3, 6));
+
+    BOOST_CHECK(board.hasTreasureAt(3, 5, Treasure::DRAGON));
+    BOOST_CHECK(!board.hasTreasureAt(3, 6, Treasure::DRAGON));
+    BOOST_CHECK(board.getMasterplate().hasTreasure(Treasure::GHOST));
+}
 
