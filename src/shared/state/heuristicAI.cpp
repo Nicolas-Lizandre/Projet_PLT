@@ -34,8 +34,13 @@ std::array<int, 2> state::heuristicAI::chooseInsert(State &state) {
             }
             tempstate.applyInsertion(potentialinsert[0],potentialinsert[1]);
             Board &tempboard = tempstate.getBoard();
-            array<int, 2> target= tempboard.findTreasure(treasure_list[treasure_index]);
-            printf("%d",target);
+            array<int, 2> target;
+            if (treasure_index <= treasure_list.size() -1) {
+                target = tempboard.findTreasure(treasure_list[treasure_index]);
+            }
+            else {
+                target = {6,6}; //only works with 2 players and the AI is the second player
+            }
             if (target[0] == -1 && target[1] == -1) {
                 continue;
             }
@@ -45,7 +50,6 @@ std::array<int, 2> state::heuristicAI::chooseInsert(State &state) {
             for (array<int, 2> pos : reachable) {
                 distance = abs(pos[0]-target[0])+abs(pos[1]-target[1]);
                 if (distance < minDistance) {
-                    cout << pos[0] << " " << pos[1] << " "<< target[0]<<" "<<target[1] << endl;
                     cout<<"distance:"<<distance<<"pour l'insert en:"<< potentialinsert[0]<< potentialinsert[1]<<"et mouvement en"<<pos[0]<<pos[1] <<endl;
                     minDistance = distance;
                     bestMovement = pos;
