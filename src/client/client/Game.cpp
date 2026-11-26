@@ -122,7 +122,7 @@ void client::Game::run() {
         // }
         // mov[0] = s[0] - '0';
         // mov[1] = s[1] - '0';
-        mov = players[PlayerTurn]->chooseInsert(board);
+        mov = players[PlayerTurn]->chooseInsert(state);
         // Update tiles and players together
         if (!state.applyInsertion(mov[0], mov[1])) {
             cout << "Illegal insertion" << endl;
@@ -158,7 +158,7 @@ void client::Game::run() {
         // mov[0] = s[0] - '0';
         // mov[1] = s[1] - '0';
 
-        mov = players[PlayerTurn]->chooseMovement(atteignables,board);
+        mov = players[PlayerTurn]->chooseMovement(atteignables,state);
 
         if (state.verifyMovementValidity(mov[0], mov[1], atteignables)) {
             players[PlayerTurn]->move(mov[0], mov[1]);

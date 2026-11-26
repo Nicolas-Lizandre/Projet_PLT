@@ -5,9 +5,10 @@
 #include <iostream>
 #include "Player.h"
 #include "easyAI.h"
+#include"heuristicAI.h"
 state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
-    players[0] = std::make_unique<Player>(0,0);
-    players[1] = std::make_unique<easyAI>(6,6);
+    players[0] = std::make_unique<easyAI>(0,0);
+    players[1] = std::make_unique<heuristicAI>(6,6);
 
 }
 
@@ -78,4 +79,15 @@ bool state::State::obtainTreasure(int playerIndex) {
 
     player.advanceTreasure();
     return true;
+}
+
+
+state::State::State(State& other)
+    : mutex(other.mutex), board(other.board)
+{
+    for (int i = 0; i < 2; i++) {
+        if (other.players[i]) {
+            players[i] = other.players[i]->clone();
+        }
+    }
 }

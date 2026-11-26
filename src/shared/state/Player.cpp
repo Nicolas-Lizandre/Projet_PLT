@@ -13,7 +13,8 @@ state::Player::Player(int i, int j): Entity(i,j) {
     starting_position[1]=j;
 }
 
-std::array<int, 2> state::Player::chooseInsert(Board &board) {
+std::array<int, 2> state::Player::chooseInsert(State &state) {
+    auto &board = state.getBoard();
     bool temp = true;
     string s;
     std::array<int, 2> mov;
@@ -44,7 +45,7 @@ std::array<int, 2> state::Player::chooseInsert(Board &board) {
     return mov;
 }
 
-std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> > reachable, Board &board) {
+std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> > reachable, State &state) {
     string s;
     std::array<int, 2> mov;
 
@@ -59,4 +60,8 @@ std::array<int, 2> state::Player::chooseMovement(std::vector<std::array<int, 2> 
     mov[0] = s[0] - '0';
     mov[1] = s[1] - '0';
     return mov;
+}
+
+std::unique_ptr<state::Entity> state::Player::clone() {
+    return std::make_unique<Player>(*this);
 }

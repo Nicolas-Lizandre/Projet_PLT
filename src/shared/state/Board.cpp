@@ -460,21 +460,21 @@ void state::Board::shuffle() {
                 choice = available[distribution(generator)];
                 switch (choice) {
                     case 0:
-                        playground.at(i).at(j) = std::make_unique<state::I>();
+                        playground.at(i).at(j) = std::make_unique<I>();
                         for(int k = 0; k < rotation; ++k) {
                             playground.at(i).at(j)->turnPlate();
                         }
                         num_I--;
                         break;
                     case 1:
-                        playground.at(i).at(j) = std::make_unique<state::T>();
+                        playground.at(i).at(j) = std::make_unique<T>();
                         for(int k = 0; k < rotation; ++k) {
                             playground.at(i).at(j)->turnPlate();
                         }
                         num_T--;
                         break;
                     case 2:
-                        playground.at(i).at(j) = std::make_unique<state::L>();
+                        playground.at(i).at(j) = std::make_unique<L>();
                         for(int k = 0; k < rotation; ++k) {
                             playground.at(i).at(j)->turnPlate();
                         }
@@ -486,18 +486,18 @@ void state::Board::shuffle() {
     }
     //It supposed to be one plate left.
     if (num_I > 0) {
-            masterplate = std::make_unique<state::I>();
+            masterplate = std::make_unique<I>();
     } else if (num_T > 0) {
-            masterplate = std::make_unique<state::T>();
+            masterplate = std::make_unique<T>();
     } else if (num_L > 0) {
-            masterplate = std::make_unique<state::L>();
+            masterplate = std::make_unique<L>();
     }
 
     std::vector<std::array<int, 2>> treasurePositions;
 
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
-            playground.at(i).at(j)->setTreasure(Treasure::NONE);
+            playground.at(i).at(j)->setTreasure(NONE);
 
             const bool isCorner =
                 (i == 0 || i == 6) && (j == 0 || j == 6);
@@ -508,7 +508,7 @@ void state::Board::shuffle() {
         }
     }
 
-    masterplate->setTreasure(Treasure::NONE);
+    masterplate->setTreasure(NONE);
 
     // Place each treasure exactly once
     std::shuffle(
@@ -517,7 +517,7 @@ void state::Board::shuffle() {
         generator
     );
 
-    for (int id = 1; id <= static_cast<int>(Treasure::GEM); ++id) {
+    for (int id = 1; id <= static_cast<int>(GEM); ++id) {
         const auto& position = treasurePositions[id - 1];
 
         playground.at(position[0]).at(position[1])->setTreasure(
@@ -528,10 +528,34 @@ void state::Board::shuffle() {
 }
 
 
-std::array<std::array<std::unique_ptr<state::Plate>, 7>, 7> &state::Board::getPlayground() {
+std::array<std::array<std::unique_ptr<Plate>, 7>, 7> &Board::getPlayground() {
     return playground;
 }
 
-state::Plate state::Board::getMasterplate() {
+Plate Board::getMasterplate() {
     return *masterplate;
+}
+
+std::array<int, 2> Board::findTreasure(Treasure treasure) {
+    if (masterplate->hasTreasure(treasure)) {
+        return {-1,-1};
+    }
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            if (playground[i][j]->hasTreasure(treasure)) {
+                return {i,j};
+            }
+        }
+    }
+
+}
+
+Board::Board(Board& other) {
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            playground[i][j] = std::make_unique<Plate>(*other.playground[i][j]);
+
+        }
+    }
+    masterplate = std::make_unique<Plate>(*other.masterplate);
 }
