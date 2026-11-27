@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(Test_Board_Turn_MasterPlate)
     plateau[6][1] = std::make_unique<L>();
     BOOST_REQUIRE(board.insertPlate(0, 1));
 
-    board.turnMasterPlate();
+    board.turnMasterplate();
     const Plate tuileLibre = board.getMasterplate();
 
     BOOST_CHECK(!tuileLibre.getNorth());
