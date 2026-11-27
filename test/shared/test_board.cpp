@@ -120,3 +120,18 @@ BOOST_AUTO_TEST_CASE(Test_Board_Turn_MasterPlate)
     BOOST_CHECK(!tuileLibre.getWest());
 }
 
+BOOST_AUTO_TEST_CASE(Test_Board_SearchPath_Invalid_Start)
+{
+    Board board;
+
+    BOOST_CHECK(board.searchPath(-1, 3).empty());
+    BOOST_CHECK(board.searchPath(7, 3).empty());
+    BOOST_CHECK(board.searchPath(3, -1).empty());
+    BOOST_CHECK(board.searchPath(3, 7).empty());
+
+    BOOST_CHECK(!board.searchPath(6, 6).empty());
+
+    board.getPlayground()[6][6].reset();
+    BOOST_CHECK(board.searchPath(6, 6).empty());
+}
+
