@@ -46,7 +46,9 @@ void state::Plate::display()
 {
     const char* symbol = " ";
 
-    if (North && South && East) {
+    if (North && East && West && South) {
+    }
+    else if (North && South && East) {
         symbol = "├";
     }
     else if (North && South && West) {

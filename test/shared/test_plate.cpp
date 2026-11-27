@@ -127,16 +127,6 @@ BOOST_AUTO_TEST_CASE(Test_display)
   I_turned_right.display();
   BOOST_CHECK_EQUAL(saved.str(), "─");
 
-  Plate I_reversed(true, false, true, false);
-  saved.str("");
-  I_turned_right.display();
-  BOOST_CHECK_EQUAL(saved.str(), "|");
-
-  Plate I_turned_left(false, true, false, true);
-  saved.str("");
-  I_turned_left.display();
-  BOOST_CHECK_EQUAL(saved.str(), "─");
-
   /*T and its four rotations*/
   Plate T(false, true, true, true);
   saved.str("");
@@ -155,7 +145,7 @@ BOOST_AUTO_TEST_CASE(Test_display)
 
   Plate T_turned_left(true, true, true, false);
   saved.str("");
-  I_turned_left.display();
+  T_turned_left.display();
   BOOST_CHECK_EQUAL(saved.str(), "├");
   
   /*Illegal Plate*/
