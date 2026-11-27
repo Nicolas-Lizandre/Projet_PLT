@@ -135,3 +135,45 @@ BOOST_AUTO_TEST_CASE(Test_Board_SearchPath_Invalid_Start)
     BOOST_CHECK(board.searchPath(6, 6).empty());
 }
 
+BOOST_AUTO_TEST_CASE(Test_Board_HasTreasureAt)
+{
+    Board board;
+    auto& plateau = board.getPlayground();
+
+    plateau[2][3]->setTreasure(Treasure::DRAGON);
+    BOOST_CHECK(board.hasTreasureAt(2, 3, Treasure::DRAGON));
+    BOOST_CHECK(!board.hasTreasureAt(2, 3, Treasure::GHOST));
+
+    plateau[2][3]->setTreasure(Treasure::NONE);
+    BOOST_CHECK(!board.hasTreasureAt(2, 3, Treasure::DRAGON));
+    BOOST_CHECK(!board.hasTreasureAt(2, 3, Treasure::NONE));
+
+    plateau[2][3].reset();
+    BOOST_CHECK(!board.hasTreasureAt(2, 3, Treasure::DRAGON));
+
+    BOOST_CHECK(!board.hasTreasureAt(-1, 3, Treasure::DRAGON));
+    BOOST_CHECK(!board.hasTreasureAt(2, 7, Treasure::DRAGON));
+}
+
+BOOST_AUTO_TEST_CASE(Test_Board_Each_Treasure_Appears_Once)
+{
+    Board board;
+
+    for (int id = static_cast<int>(Treasure::DRAGON);
+         id <= static_cast<int>(Treasure::GEM); ++id) {
+        const Treasure tresor = static_cast<Treasure>(id);
+        int occurrences = 0;
+
+        for (int ligne = 0; ligne < 7; ++ligne) {
+            for (int colonne = 0; colonne < 7; ++colonne) {
+                if (board.hasTreasureAt(ligne, colonne, tresor)) {
+                    ++occurrences;
+                }
+            }
+        }
+
+        BOOST_CHECK_MESSAGE(occurrences == 1,
+            "Le tresor " << id << " apparait " << occurrences << " fois");
+    }
+}
+
