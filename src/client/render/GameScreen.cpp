@@ -86,7 +86,8 @@ GameScreen::GameScreen (sf::RenderWindow & window, state::State & gamecore, List
 void GameScreen::handleEvents (sf::Event & event) {
     //State Based events (chances are here is not the good place)
     for (auto &player : gamecore.getPlayers()) {
-        if(player->getTreasureIndex() == TREASURES_TO_FIND_AT_2_PLAYERS) {
+        if(player->getTreasureIndex() == TREASURES_TO_FIND_AT_2_PLAYERS &&
+            player->getStarting_position() == player->getPosition()) {
             demand_screen_change = VICTORYSCREEN;
         }
     }

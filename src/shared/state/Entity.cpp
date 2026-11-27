@@ -11,6 +11,11 @@ void state::Entity::move(int i, int j) {
     position[1]=j;
 }
 
+const std::array<int, 2> &state::Entity::getStarting_position() const {
+    return starting_position;
+}
+
+
 std::array<int, 2>  state::Entity::getPosition () {
     return position;
 }

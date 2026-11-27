@@ -150,7 +150,8 @@ void state::State::advanceTurn () {
         obtainTreasure(playing_player_ID);
         std::cout<<"IA Treasures INDEX: "<< players[playing_player_ID]->getTreasureIndex() <<std::endl;
 
-        if(players[playing_player_ID]->getTreasureIndex() == 12) {
+        if(players[playing_player_ID]->getTreasureIndex() == 12 &&
+            players[playing_player_ID]->getStarting_position() == players[playing_player_ID]->getPosition()) {
             return; //Avoid 2 consecutives CPU to play despite the first one being the winner
         }
         //Needed : CPU does 2 turns at once
