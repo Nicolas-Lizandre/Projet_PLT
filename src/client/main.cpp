@@ -20,7 +20,7 @@ using namespace client;
 
 int main()
 {
-    //Morceau de code Lizandre
+    // //Morceau de code Lizandre
     GameWithRender game;
     game.run();
 

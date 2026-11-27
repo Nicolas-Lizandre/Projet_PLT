@@ -56,10 +56,128 @@ BOOST_AUTO_TEST_CASE(TestFourTurnsIsIdentity)
 
 BOOST_AUTO_TEST_CASE(Test_TurnPlate)
 {
-  L plate;
-  plate.turnPlate();
-  BOOST_CHECK(1);
+  L plate_L;
+  plate_L.turnPlate();
+  BOOST_CHECK(!plate_L.getNorth() && plate_L.getEast() &&
+              plate_L.getSouth() && !plate_L.getWest());
+  plate_L.turnPlate();
+  BOOST_CHECK(!plate_L.getNorth() && !plate_L.getEast() &&
+              plate_L.getSouth() && plate_L.getWest());
+  plate_L.turnPlate();
+  BOOST_CHECK(plate_L.getNorth() && !plate_L.getEast() &&
+              !plate_L.getSouth() && plate_L.getWest());
+  T plate_T;
+  plate_T.turnPlate();
+  BOOST_CHECK(plate_T.getNorth() && !plate_T.getEast() &&
+              plate_T.getSouth() && plate_T.getWest());
+  plate_T.turnPlate();
+  BOOST_CHECK(plate_T.getNorth() && plate_T.getEast() &&
+              !plate_T.getSouth() && plate_T.getWest());
+  plate_T.turnPlate();
+  BOOST_CHECK(plate_T.getNorth() && plate_T.getEast() &&
+              plate_T.getSouth() && !plate_T.getWest());
+  
+  I plate_I;
+  plate_I.turnPlate();
+  BOOST_CHECK(!plate_I.getNorth() && plate_I.getEast() &&
+              !plate_I.getSouth() && plate_I.getWest());
+  plate_I.turnPlate();
+  BOOST_CHECK(plate_I.getNorth() && !plate_I.getEast() &&
+              plate_I.getSouth() && !plate_I.getWest());
+  plate_I.turnPlate();
+  BOOST_CHECK(!plate_I.getNorth() && plate_I.getEast() &&
+              !plate_I.getSouth() && plate_I.getWest());
+  
 }
 
+BOOST_AUTO_TEST_CASE(Test_display)
+{
+  std::ostringstream saved; //file in memory where we stock the result of display
+  std::streambuf* previous = std::cout.rdbuf(saved.rdbuf()); //Redirect cout into 'saved'
 
+  /*L and its four rotations*/
+  Plate L(true, true, false, false);
+  L.display();
+  BOOST_CHECK_EQUAL(saved.str(), "└");
 
+  Plate L_turned_right(false, true, true, false);
+  saved.str(""); //Clears the previous output
+  L_turned_right.display();
+  BOOST_CHECK_EQUAL(saved.str(), "┌");
+  
+  Plate L_reversed(false, false, true, true);
+  saved.str("");
+  L_reversed.display();
+  BOOST_CHECK_EQUAL(saved.str(), "┐");
+
+  Plate L_turned_left(true, false, false, true);
+  saved.str("");
+  L_turned_left.display();
+  BOOST_CHECK_EQUAL(saved.str(), "┘");
+  
+
+  /*I and its four rotations*/
+  Plate I(true, false, true, false);
+  saved.str("");
+  I.display();
+  BOOST_CHECK_EQUAL(saved.str(), "|");
+
+  Plate I_turned_right(false, true, false, true);
+  saved.str("");
+  I_turned_right.display();
+  BOOST_CHECK_EQUAL(saved.str(), "─");
+
+  /*T and its four rotations*/
+  Plate T(false, true, true, true);
+  saved.str("");
+  T.display();
+  BOOST_CHECK_EQUAL(saved.str(), "┬");
+
+  Plate T_turned_right(true, false, true, true);
+  saved.str("");
+  T_turned_right.display();
+  BOOST_CHECK_EQUAL(saved.str(), "┤");
+
+  Plate T_reversed(true, true, false, true);
+  saved.str("");
+  T_reversed.display();
+  BOOST_CHECK_EQUAL(saved.str(), "┴");
+
+  Plate T_turned_left(true, true, true, false);
+  saved.str("");
+  T_turned_left.display();
+  BOOST_CHECK_EQUAL(saved.str(), "├");
+  
+  /*Illegal Plate*/
+  Plate Undefined(false, false, false, false);
+  saved.str("");
+  Undefined.display();
+  BOOST_CHECK_EQUAL(saved.str(), " ");
+
+  Plate Undefined_2(true, false, false, false);
+  saved.str("");
+  Undefined_2.display();
+  BOOST_CHECK_EQUAL(saved.str(), " ");
+
+  Plate Undefined_3(false, true, false, false);
+  saved.str("");
+  Undefined_3.display();
+  BOOST_CHECK_EQUAL(saved.str(), " ");
+
+  Plate Undefined_4(false, false, true, false);
+  saved.str("");
+  Undefined_4.display();
+  BOOST_CHECK_EQUAL(saved.str(), " ");
+
+  Plate Undefined_5(false, false, false, true);
+  saved.str("");
+  Undefined_5.display();
+  BOOST_CHECK_EQUAL(saved.str(), " ");
+
+  Plate Undefined_6(true, true, true, true);
+  saved.str("");
+  Undefined_6.display();
+  BOOST_CHECK_EQUAL(saved.str(), " ");
+
+  std::cout.rdbuf(previous); //Cout back to normal
+}

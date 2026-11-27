@@ -9,6 +9,7 @@
 #include "ArialFont.h"
 #include "GameModeScreen.h"
 #include "GameScreen.h"
+#include "VictoryScreen.h"
 #include "render/completeSprite.h"
 #include "render/completeText.h"
 
@@ -44,8 +45,8 @@ void render::Render::run() {
 
         manageDraw();
         seekDemandNewScreen();
-        //Comment s'occuper des commandes à exec en permanence ?????
-        list_commands.exeAll(); //WIP ce bout de code est à dégager dans Game
+
+        list_commands.exeAll(); //WIP
     }
 }
 
@@ -78,6 +79,9 @@ void render::Render::seekDemandNewScreen () {
         }
         else if(current_screen_state->getDemandScreenChange() == GAMESCREEN) {
             current_screen_state = std::make_unique<GameScreen>(window,gamecore,list_commands);
+        }
+        else if(current_screen_state->getDemandScreenChange() == VICTORYSCREEN) {
+            current_screen_state = std::make_unique<VictoryScreen>(window, gamecore); //list_commands pas utile ici
         }
 
     }

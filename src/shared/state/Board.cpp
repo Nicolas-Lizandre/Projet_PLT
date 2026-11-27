@@ -85,69 +85,27 @@ bool state::Board::insertPlate(int i, int j) {
 }
 
 
-void state::Board::turnMasterPlate(){
+void state::Board::turnMasterplate(){
     masterplate->turnPlate();
 }
 
 
-/*void state::Board::display(
-    const std::vector<std::array<int, 2>>& reachable,
-    const std::vector<std::array<int, 2>>& playerPositions)
-{
-    const char* const RESET = "\033[0m";
-    const char* const YELLOW = "\033[1;33m";
 
-    const char* const PLAYER_COLORS[2] = {
-        "\033[1;37;42m", // White text, green background
-        "\033[1;37;41m"  // White text, red background
-    };
 
-    for (int i = 0; i < 7; ++i) {
-        for (int j = 0; j < 7; ++j) {
-            const char* couleur = RESET;
 
-            // Highlight reachable cells
-            for (const auto& c : reachable) {
-                if (c[0] == i && c[1] == j) {
-                    couleur = YELLOW;
-                    break;
-                }
-            }
-
-            // Player colors take priority
-            for (std::size_t k = 0; k < playerPositions.size(); ++k) {
-                if (playerPositions[k][0] == i &&
-                    playerPositions[k][1] == j) {
-                    couleur = PLAYER_COLORS[k % 2];
-                }
-            }
-
-            std::cout << couleur;
-
-            if (playground[i][j]) {
-                playground[i][j]->showPlate();
-            } else {
-                std::cout << '?';
-            }
-
-            std::cout << RESET;
-        }
-
-        std::cout << '\n';
-    }
-}*/
+void Board::displayMasterplate() {
+    masterplate->display();
+}
 
 void state::Board::display(
     const std::vector<std::array<int, 2>>& reachable,
-    const std::vector<std::array<int, 2>>& playerPositions,
-    Treasure expected)
-{
-    const char* reset = "\033[0m";
-    const char* reachableColor = "\033[1;33m";
-    const char* treasureColor = "\033[1;30;105m";
-    const std::array<const char*, 4> playerColors = {
-        "\033[1;37;42m", "\033[1;37;41m",
-        "\033[1;37;44m", "\033[1;37;46m"
+    const std::vector<std::array<int, 2>>& playerPositions, Treasure expected) {
+        const char* reset = "\033[0m";
+        const char* reachableColor = "\033[1;33m";
+        const char* treasureColor = "\033[1;30;105m";
+        const std::array<const char*, 4> playerColors = {
+            "\033[1;37;42m", "\033[1;37;41m",
+            "\033[1;37;44m", "\033[1;37;46m"
     };
 
     std::cout << "\n     ";
@@ -176,11 +134,11 @@ void state::Board::display(
                     color = playerColors[k];
                     break;
                 }
-            }
+                 }
 
             std::cout << color;
             if (plate) {
-                plate->showPlate();
+                plate->display();
             } else {
                 std::cout << '?';
             }
@@ -228,8 +186,7 @@ void state::Board::display(
     }
 }*/
 
-std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
-{
+std::vector<std::array<int, 2>> state::Board::searchPath(int i, int j){
     std::vector<std::array<int, 2>> reachable;
 
     if (i < 0 || i >= 7 || j < 0 || j >= 7) return reachable;
@@ -279,9 +236,7 @@ std::vector<std::array<int, 2>> state::Board::searchPath (int i, int j)
     return reachable;
 }
 
-bool state::Board::hasTreasureAt(
-    int i, int j, Treasure expected) const
-{
+bool state::Board::hasTreasureAt(int i, int j, Treasure expected) const{
     if (i < 0 || i >= 7 || j < 0 || j >= 7 || !playground[i][j]) {
         return false;
     }
@@ -456,21 +411,21 @@ void state::Board::shuffle() {
                 choice = available[distribution(generator)];
                 switch (choice) {
                     case 0:
-                        playground.at(i).at(j) = std::make_unique<state::I>();
+                        playground.at(i).at(j) = std::make_unique<I>();
                         for(int k = 0; k < rotation; ++k) {
                             playground.at(i).at(j)->turnPlate();
                         }
                         num_I--;
                         break;
                     case 1:
-                        playground.at(i).at(j) = std::make_unique<state::T>();
+                        playground.at(i).at(j) = std::make_unique<T>();
                         for(int k = 0; k < rotation; ++k) {
                             playground.at(i).at(j)->turnPlate();
                         }
                         num_T--;
                         break;
                     case 2:
-                        playground.at(i).at(j) = std::make_unique<state::L>();
+                        playground.at(i).at(j) = std::make_unique<L>();
                         for(int k = 0; k < rotation; ++k) {
                             playground.at(i).at(j)->turnPlate();
                         }
@@ -482,18 +437,18 @@ void state::Board::shuffle() {
     }
     //It supposed to be one plate left.
     if (num_I > 0) {
-            masterplate = std::make_unique<state::I>();
+            masterplate = std::make_unique<I>();
     } else if (num_T > 0) {
-            masterplate = std::make_unique<state::T>();
+            masterplate = std::make_unique<T>();
     } else if (num_L > 0) {
-            masterplate = std::make_unique<state::L>();
+            masterplate = std::make_unique<L>();
     }
 
     std::vector<std::array<int, 2>> treasurePositions;
 
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
-            playground.at(i).at(j)->setTreasure(Treasure::NONE);
+            playground.at(i).at(j)->setTreasure(NONE);
 
             const bool isCorner =
                 (i == 0 || i == 6) && (j == 0 || j == 6);
@@ -504,7 +459,7 @@ void state::Board::shuffle() {
         }
     }
 
-    masterplate->setTreasure(Treasure::NONE);
+    masterplate->setTreasure(NONE);
 
     // Place each treasure exactly once
     std::shuffle(
@@ -513,21 +468,42 @@ void state::Board::shuffle() {
         generator
     );
 
-    for (int id = 1; id <= static_cast<int>(Treasure::GEM); ++id) {
+    for (int id = 1; id <= static_cast<int>(UNICORN); ++id) {
         const auto& position = treasurePositions[id - 1];
-
         playground.at(position[0]).at(position[1])->setTreasure(
             static_cast<Treasure>(id)
         );
     }
-
 }
 
 
-std::array<std::array<std::unique_ptr<state::Plate>, 7>, 7> &state::Board::getPlayground() {
+std::array<std::array<std::unique_ptr<Plate>, 7>, 7> &Board::getPlayground() {
     return playground;
 }
 
-state::Plate state::Board::getMasterplate() {
+Plate Board::getMasterplate() {
     return *masterplate;
+}
+
+std::array<int, 2> Board::findTreasure(Treasure treasure) {
+    if (masterplate->hasTreasure(treasure)) {
+        return {-1,-1};
+    }
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            if (playground[i][j]->hasTreasure(treasure)) {
+                return {i,j};
+            }
+        }
+    }
+}
+
+Board::Board(Board& other) {
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            playground[i][j] = std::make_unique<Plate>(*other.playground[i][j]);
+
+        }
+    }
+    masterplate = std::make_unique<Plate>(*other.masterplate);
 }

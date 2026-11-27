@@ -23,6 +23,7 @@ void ListCommands::exeAll () {
         command->exec();
     }
     list_commands.clear(); //On vide les commandes exécutées
+
 }
 
 void ListCommands::add (std::unique_ptr<Command> command) {
