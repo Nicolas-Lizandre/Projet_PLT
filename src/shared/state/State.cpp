@@ -7,7 +7,7 @@
 #include "easyAI.h"
 #include"heuristicAI.h"
 state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
-    players[0] = std::make_unique<easyAI>(0,0);
+    players[0] = std::make_unique<Player>(0,0);
     players[1] = std::make_unique<heuristicAI>(6,6);
 
 }
@@ -110,20 +110,60 @@ int state::State::getPlayingPlayerID() {
 }
 
 void state::State::advanceTurn () {
+    //if the first player is a CPU - we need to do an advance turn immediately
 
-    if (playing_phase == INSERT_PIECE) {
-        playing_phase = MOVE;
-        return;
+
+    //Case Human
+    if(typeid(*players.at(playing_player_ID)) == typeid(Player)) {
+        if (playing_phase == INSERT_PIECE) {
+            playing_phase = MOVE;
+            return;
+        }
+
+        if (playing_phase == MOVE) {
+            switch (playing_player_ID) {
+                case(0) : playing_player_ID = 1; break;
+                case(1) : playing_player_ID = 0; break;
+            }
+            playing_phase = INSERT_PIECE;
+            //return; <- If the next turn is for CPUs it will be done immediatly
+        }
     }
 
-    if (playing_phase == MOVE) {
+
+
+    //Case CPU
+    if(typeid(*players.at(playing_player_ID)) != typeid(Player)) {
+        std::cout<<playing_player_ID<<std::endl;
+        std::array<int, 2> mov;
+        //INSERT_PIECE
+        mov = players.at(playing_player_ID)->chooseInsert(*this); //Supposed always true
+        this->applyInsertion(mov[0], mov[1]);
+
+
+        //MOVE
+        std::vector<std::array<int, 2>> atteignables = board.searchPath(
+            players.at(playing_player_ID)->getPosition()[0],
+            players.at(playing_player_ID)->getPosition()[1]);
+        mov = players.at(playing_player_ID)->chooseMovement(atteignables,*this); //Supposed always true
+        players[playing_player_ID]->move(mov[0], mov[1]);
+        obtainTreasure(playing_player_ID);
+        std::cout<<"IA Treasures INDEX: "<< players[playing_player_ID]->getTreasureIndex() <<std::endl;
+
+        if(players[playing_player_ID]->getTreasureIndex() == 12) {
+            return; //Avoid 2 consecutives CPU to play despite the first one being the winner
+        }
+        //Needed : CPU does 2 turns at once
         switch (playing_player_ID) {
             case(0) : playing_player_ID = 1; break;
             case(1) : playing_player_ID = 0; break;
         }
-        playing_phase = INSERT_PIECE;
-        return;
+        if (typeid(*players[playing_player_ID%2])!=typeid(Player)){//if next player is CPU
+            return advanceTurn();
+        }
     }
+
+
 
 }
 /*
