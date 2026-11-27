@@ -75,7 +75,7 @@ void render::Render::seekDemandNewScreen () {
             current_screen_state = std::make_unique<TitleScreen>(window);
         }
         else if(current_screen_state->getDemandScreenChange() == GAMEMODESCREEN) {
-            current_screen_state = std::make_unique<GameModeScreen>(window,gamecore);
+            current_screen_state = std::make_unique<GameModeScreen>(window,gamecore,list_commands);
         }
         else if(current_screen_state->getDemandScreenChange() == GAMESCREEN) {
             current_screen_state = std::make_unique<GameScreen>(window,gamecore,list_commands);

@@ -2,7 +2,11 @@
 // Created by tompi on 08/10/2026.
 //
 #include "State.h"
+
+#include <algorithm>
 #include <iostream>
+#include <random>
+
 #include "Player.h"
 #include "easyAI.h"
 #include"heuristicAI.h"
@@ -164,13 +168,24 @@ void state::State::advanceTurn () {
         }
     }
 
-
-
 }
-/*
-void state::State::initPlayingPiece (){
-    playing_piece = GREEN_PIECE;
+
+void state::State::dealTreasures() {
+    //Répartition initiale des trésors
+    std::array<state::Treasure, 24> treasures{};
+    for (int k = 0; k < static_cast<int>(treasures.size()); ++k) {
+        treasures[k] = static_cast<state::Treasure>(k + 1);
+    }
+
+    std::mt19937 generator(std::random_device{}());
+    shuffle(treasures.begin(), treasures.end(), generator);
+
+    int treasures_per_player = 24/players.size();
+    std::cout<< "treasures_per_player : "<< treasures_per_player<<std::endl;
+    for (int p = 0; p < players.size(); ++p) {
+        std::array<state::Treasure,12> objectives{}; //static_cast<int>(24/players.size()) makes the calculus done in compilation
+        std::copy_n(treasures.begin() + p * treasures_per_player, treasures_per_player, objectives.begin());
+        players[p]->setTreasureList(objectives);
+    }
 }
-void state::State::initPlayingPhase () {
-    playing_phase = INSERT_PIECE;
-}*/
+

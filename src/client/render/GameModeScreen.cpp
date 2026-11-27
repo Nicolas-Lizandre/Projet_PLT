@@ -3,12 +3,14 @@
 //
 #include "GameModeScreen.h"
 
-#include "GameModeScreen.h"
+#include <algorithm>
+
+#include "setEntitiesCOMMAND.h"
 
 #include <iostream>
-#include <state/State.h>
 
 #include "ArialFont.h"
+#include "ListCommands.h"
 
 using namespace render;
 
@@ -19,42 +21,44 @@ inline const std::array<sf::Vector2f, 4> toogle_positions =
     sf::Vector2f(300.f, 300.f),
     sf::Vector2f(300.f, 400.f)};
 
-GameModeScreen::GameModeScreen (sf::RenderWindow & window, state::State & gamecore) : ScreenState(window), gamecore(gamecore) {
+GameModeScreen::GameModeScreen (sf::RenderWindow & window, state::State & gamecore, ListCommands & list_commands) :
+ScreenState(window), gamecore(gamecore), list_commands(list_commands) {
     std::cout << "Created GameModeScreen" << std::endl;
 
-    toogle_list = {NONE,NONE,NONE,NONE};
+    toogle_list = {NONE, NONE, NONE, NONE};
 
     //Background (red-yellow gradient)
     addCompleteSprite("../assets/Background_LABYRINTHE.png",
-        {0, 0},{1.f, 1.f},true);
+                      {0, 0}, {1.f, 1.f}, true);
     // Start Button Sprite
     addCompleteSprite("../assets/StartButtonSprite.png",
-    {240, 500},{2.1f, 1.0f},true);
+                      {240, 500}, {2.1f, 1.0f}, true);
 
     //Toogle Player Type (reuse - StartButtonSprite)
     addCompleteSprite("../assets/StartButtonSprite.png",
-    {300, 100},{1.5f, 1.0f},true,"Toogle0");
+                      {300, 100}, {1.5f, 1.0f}, true, "Toogle0");
     addCompleteSprite("../assets/StartButtonSprite.png",
-    {300, 200},{1.5f, 1.0f},true,"Toogle1");
+                      {300, 200}, {1.5f, 1.0f}, true, "Toogle1");
     addCompleteSprite("../assets/StartButtonSprite.png",
-    {300, 300},{1.5f, 1.0f},true,"Toogle2");
+                      {300, 300}, {1.5f, 1.0f}, true, "Toogle2");
     addCompleteSprite("../assets/StartButtonSprite.png",
-    {300, 400},{1.5f, 1.0f},true,"Toogle3");
+                      {300, 400}, {1.5f, 1.0f}, true, "Toogle3");
 
 
     //Texts
     addCompleteText(sf::Text(ArialFont::font, std::string("Commencer"), 50),
-        sf::Color::White, {260.f, 500.f}, true);
+                    sf::Color::White, {260.f, 500.f}, true);
     //Player info
     addCompleteText(sf::Text(ArialFont::font, std::string("Joueur 0"), 50),
-        sf::Color::Green, {50.f, 100.f}, true);
+                    sf::Color::Green, {50.f, 100.f}, true);
     addCompleteText(sf::Text(ArialFont::font, std::string("Joueur 1"), 50),
-        sf::Color(255, 0, 255, 125), {50.f, 200.f}, true);
+                    sf::Color(255, 0, 255, 125), {50.f, 200.f}, true);
     addCompleteText(sf::Text(ArialFont::font, std::string("Joueur 2"), 50),
-        sf::Color::Yellow, {50.f, 300.f}, true);
+                    sf::Color::Yellow, {50.f, 300.f}, true);
     addCompleteText(sf::Text(ArialFont::font, std::string("Joueur 3"), 50),
-        sf::Color::Blue, {50.f, 400.f}, true);
+                    sf::Color::Blue, {50.f, 400.f}, true);
 }
+
 void GameModeScreen::handleEvents (sf::Event & event) {
     if (const auto* mousePressed = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (mousePressed->button == sf::Mouse::Button::Left)
@@ -87,11 +91,19 @@ void GameModeScreen::handleEvents (sf::Event & event) {
 
 
 
-            if (mousePos.x >240 && mousePos.y > 500 && mousePos.x < 555 && mousePos.y < 566)
-            {
-
-                std::cout << "Zone clique GameModeScreen !" << std::endl;
-                demand_screen_change = GAMESCREEN; //cet objet n'est pas utilisé
+            if (mousePos.x >240 && mousePos.y > 500 && mousePos.x < 555 && mousePos.y < 566) {
+                //Intern method count number entity - to do
+                int found = 0;
+                for (EntityQUERIED e : toogle_list){
+                    if (e != NONE){++found;}
+                }
+                if (found == 2){ // ">=" will prevent impossible Game with 1 or 0 entity
+                    list_commands.add(std::make_unique<setEntitiesCOMMAND>(gamecore,toogle_list));
+                    demand_screen_change = GAMESCREEN;
+                }
+                else {
+                    std::cout << "Pas implémenté !!" << std::endl;
+                }
                 //screen->set_current_screen_state(std::make_unique<GameModeScreen>(screen));
             }
         }
