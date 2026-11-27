@@ -35,17 +35,17 @@ std::array<int, 2> state::heuristicAI::chooseInsert(State &state) {
             tempstate.applyInsertion(potentialinsert[0],potentialinsert[1]);
             Board &tempboard = tempstate.getBoard();
             array<int, 2> target;
+            auto &tempplayers = tempstate.getPlayers();
             if (treasure_index <= treasure_list.size() -1) {
                 target = tempboard.findTreasure(treasure_list[treasure_index]);
             }
             else {
-                target = {6,6}; //only works with 2 players and the AI is the second player
+                target = tempplayers[state.getCurrentPlayer()]->getStarting_position();
             }
             if (target[0] == -1 && target[1] == -1) {
                 continue;
             }
-            auto &tempplayers = tempstate.getPlayers();
-            auto playerposition = tempplayers[1]->getPosition();  //only works with 2 players and the AI is the second player
+            auto playerposition = tempplayers[state.getCurrentPlayer()]->getPosition();
             vector<array<int, 2>> reachable =tempboard.searchPath(playerposition[0], playerposition[1]);
             for (array<int, 2> pos : reachable) {
                 distance = abs(pos[0]-target[0])+abs(pos[1]-target[1]);

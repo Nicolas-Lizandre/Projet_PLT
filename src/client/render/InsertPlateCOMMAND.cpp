@@ -12,7 +12,7 @@ using namespace render;
 
 InsertPlateCOMMAND::InsertPlateCOMMAND (state::State & gamecore, int i, int j) : gamecore(gamecore), i(i), j(j) {}
 void InsertPlateCOMMAND::exec() {
-    if(gamecore.getPlayingPhase() == state::INSERT_PIECE) {
+    if(gamecore.getPhase() == state::INSERT_PIECE) {
         if(gamecore.applyInsertion(i,j)) { //true if it's legal
             gamecore.advanceTurn();
         }

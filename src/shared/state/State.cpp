@@ -7,7 +7,7 @@
 #include "easyAI.h"
 #include"heuristicAI.h"
 state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
-    players[0] = std::make_unique<easyAI>(0,0);
+    players[0] = std::make_unique<Player>(0,0);
     players[1] = std::make_unique<heuristicAI>(6,6);
 
 }
@@ -99,14 +99,14 @@ state::State::State(State& other)
 
 
 
-state::TurnPhase state::State::getPlayingPhase () {
-    return playing_phase;
+state::TurnPhase state::State::getPhase () {
+    return phase;
 }
 
 
 
-int state::State::getPlayingPlayerID() {
-    return playing_player_ID;
+int state::State::getCurrentPlayer() {
+    return currentPlayer;
 }
 
 void state::State::advanceTurn () {
@@ -114,18 +114,18 @@ void state::State::advanceTurn () {
 
 
     //Case Human
-    if(typeid(*players.at(playing_player_ID)) == typeid(Player)) {
-        if (playing_phase == INSERT_PIECE) {
-            playing_phase = MOVE;
+    if(typeid(*players.at(currentPlayer)) == typeid(Player)) {
+        if (phase == INSERT_PIECE) {
+            phase = MOVE;
             return;
         }
 
-        if (playing_phase == MOVE) {
-            switch (playing_player_ID) {
-                case(0) : playing_player_ID = 1; break;
-                case(1) : playing_player_ID = 0; break;
+        if (phase == MOVE) {
+            switch (currentPlayer) {
+                case(0) : currentPlayer = 1; break;
+                case(1) : currentPlayer = 0; break;
             }
-            playing_phase = INSERT_PIECE;
+            phase = INSERT_PIECE;
             //return; <- If the next turn is for CPUs it will be done immediatly
         }
     }
@@ -133,33 +133,33 @@ void state::State::advanceTurn () {
 
 
     //Case CPU
-    if(typeid(*players.at(playing_player_ID)) != typeid(Player)) {
-        std::cout<<playing_player_ID<<std::endl;
+    if(typeid(*players.at(currentPlayer)) != typeid(Player)) {
+        std::cout<<currentPlayer<<std::endl;
         std::array<int, 2> mov;
         //INSERT_PIECE
-        mov = players.at(playing_player_ID)->chooseInsert(*this); //Supposed always true
+        mov = players.at(currentPlayer)->chooseInsert(*this); //Supposed always true
         this->applyInsertion(mov[0], mov[1]);
 
 
         //MOVE
         std::vector<std::array<int, 2>> atteignables = board.searchPath(
-            players.at(playing_player_ID)->getPosition()[0],
-            players.at(playing_player_ID)->getPosition()[1]);
-        mov = players.at(playing_player_ID)->chooseMovement(atteignables,*this); //Supposed always true
-        players[playing_player_ID]->move(mov[0], mov[1]);
-        obtainTreasure(playing_player_ID);
-        std::cout<<"IA Treasures INDEX: "<< players[playing_player_ID]->getTreasureIndex() <<std::endl;
+            players.at(currentPlayer)->getPosition()[0],
+            players.at(currentPlayer)->getPosition()[1]);
+        mov = players.at(currentPlayer)->chooseMovement(atteignables,*this); //Supposed always true
+        players[currentPlayer]->move(mov[0], mov[1]);
+        obtainTreasure(currentPlayer);
+        std::cout<<"IA Treasures INDEX: "<< players[currentPlayer]->getTreasureIndex() <<std::endl;
 
-        if(players[playing_player_ID]->getTreasureIndex() == 12 &&
-            players[playing_player_ID]->getStarting_position() == players[playing_player_ID]->getPosition()) {
+        if(players[currentPlayer]->getTreasureIndex() == 12 &&
+            players[currentPlayer]->getStarting_position() == players[currentPlayer]->getPosition()) {
             return; //Avoid 2 consecutives CPU to play despite the first one being the winner
         }
         //Needed : CPU does 2 turns at once
-        switch (playing_player_ID) {
-            case(0) : playing_player_ID = 1; break;
-            case(1) : playing_player_ID = 0; break;
+        switch (currentPlayer) {
+            case(0) : currentPlayer = 1; break;
+            case(1) : currentPlayer = 0; break;
         }
-        if (typeid(*players[playing_player_ID%2])!=typeid(Player)){//if next player is CPU
+        if (typeid(*players[currentPlayer%2])!=typeid(Player)){//if next player is CPU
             return advanceTurn();
         }
     }

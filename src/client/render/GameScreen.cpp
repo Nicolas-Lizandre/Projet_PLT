@@ -207,9 +207,9 @@ void GameScreen::drawablesUpdate() {
         {1,1},false);
 
         //To indicate which is the current player
-        if(gamecore.getPlayingPlayerID() == i) {
+        if(gamecore.getCurrentPlayer() == i) {
             //Current player text WITH corresponding piece coloration
-            switch (gamecore.getPlayingPlayerID()) {
+            switch (gamecore.getCurrentPlayer()) {
                 case(0) : addCompleteText(sf::Text(ArialFont::font, std::string("Player" + std::to_string(i)), 30),
                     sf::Color::Green,{575.f, 80.f},false); break;
                 case(1) : addCompleteText(sf::Text(ArialFont::font, std::string("Player" + std::to_string(i)), 30),
