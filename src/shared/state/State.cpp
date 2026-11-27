@@ -7,7 +7,7 @@
 #include "easyAI.h"
 #include"heuristicAI.h"
 state::State::State(std::mutex & mutex): mutex(mutex), board{}, players{} {
-    players[0] = std::make_unique<Player>(0,0);
+    players[0] = std::make_unique<easyAI>(0,0);
     players[1] = std::make_unique<heuristicAI>(6,6);
 
 }
